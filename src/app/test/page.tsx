@@ -110,7 +110,7 @@ export default function TestPage() {
           </div>
 
           <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 text-xs text-slate-600 space-y-1">
-            <p><span className="text-slate-400">Target:</span> {process.env.NEXT_PUBLIC_FASTAPI_BASE_URL || 'http://localhost:8000'}/health</p>
+            <p><span className="text-slate-400">Target:</span> {process.env.NEXT_PUBLIC_FASTAPI_BASE_URL || (process.env.NODE_ENV === 'production' ? 'https://freightsense-2-0.onrender.com' : 'http://localhost:8000')}/health</p>
             <p><span className="text-slate-400">Last Checked:</span> {lastCheckTime || 'Initializing'}</p>
           </div>
         </div>

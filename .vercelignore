@@ -1,0 +1,36 @@
+# ==============================================================================
+# FreightSense 2.0 - Vercel Deployment Ignore Configuration
+# Excludes backend service, ML model artifacts, and DB migrations from Vercel.
+# Backend is deployed separately to Render (https://freightsense-2-0.onrender.com).
+# ==============================================================================
+
+# Backend FastAPI service (Deployed on Render)
+services/
+services/**
+
+# Supabase database migrations and DDL
+supabase/
+supabase/**
+
+# Render deployment configuration
+render.yaml
+
+# Python virtualenvs, bytecode, and test caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Large ML model artifacts and training datasets
+*.joblib
+*.pkl
+services/ml-api/artifacts/
+services/ml-api/data/
+
+# Local environment files (Already in .gitignore, excluded from deployment)
+.env.local
+.env.*.local
