@@ -1,0 +1,50 @@
+[
+  {
+    "port_name": "Shanghai",
+    "code": "CNSHA",
+    "country": "China",
+    "lat": 31.2304,
+    "lon": 121.4737,
+    "scale_rank": 1
+  },
+  {
+    "port_name": "Rotterdam",
+    "code": "NLRTM",
+    "country": "Netherlands",
+    "lat": 51.9244,
+    "lon": 4.4777,
+    "scale_rank": 1
+  },
+  {
+    "port_name": "Los Angeles",
+    "code": "USLAX",
+    "country": "United States",
+    "lat": 33.7432,
+    "lon": -118.2673,
+    "scale_rank": 1
+  },
+  {
+    "port_name": "Singapore",
+    "code": "SGSIN",
+    "country": "Singapore",
+    "lat": 1.29027,
+    "lon": 103.851959,
+    "scale_rank": 1
+  },
+  {
+    "port_name": "New York / New Jersey",
+    "code": "USNYC",
+    "country": "United States",
+    "lat": 40.7128,
+    "lon": -74.006,
+    "scale_rank": 1
+  },
+  {
+    "port_name": "Hamburg",
+    "code": "DEHAM",
+    "country": "Germany",
+    "lat": 53.5511,
+    "lon": 9.9937,
+    "scale_rank": 1
+  }
+]

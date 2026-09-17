@@ -1,0 +1,26 @@
+[
+  {
+    "period": "2024-05",
+    "country": "CHN",
+    "partner": "USA",
+    "exports_usd_m": 41200.0,
+    "imports_usd_m": 12800.0,
+    "balance_usd_m": 28400.0
+  },
+  {
+    "period": "2024-06",
+    "country": "CHN",
+    "partner": "USA",
+    "exports_usd_m": 42100.0,
+    "imports_usd_m": 13100.0,
+    "balance_usd_m": 29000.0
+  },
+  {
+    "period": "2024-07",
+    "country": "CHN",
+    "partner": "USA",
+    "exports_usd_m": 43500.0,
+    "imports_usd_m": 13400.0,
+    "balance_usd_m": 30100.0
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "date": "2024-05",
+    "crude_brent_usd": 82.05,
+    "crude_wti_usd": 78.62,
+    "natural_gas_us_usd": 2.12,
+    "iron_ore_usd": 117.8
+  },
+  {
+    "date": "2024-06",
+    "crude_brent_usd": 82.56,
+    "crude_wti_usd": 80.14,
+    "natural_gas_us_usd": 2.54,
+    "iron_ore_usd": 107.2
+  },
+  {
+    "date": "2024-07",
+    "crude_brent_usd": 83.88,
+    "crude_wti_usd": 81.8,
+    "natural_gas_us_usd": 2.38,
+    "iron_ore_usd": 106.5
+  },
+  {
+    "date": "2024-08",
+    "crude_brent_usd": 78.88,
+    "crude_wti_usd": 76.68,
+    "natural_gas_us_usd": 2.15,
+    "iron_ore_usd": 99.4
+  }
+]

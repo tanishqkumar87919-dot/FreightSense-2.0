@@ -1,0 +1,58 @@
+[
+  {
+    "country": "CHN",
+    "period": "2024-Q1",
+    "lsci": 178.4,
+    "fleet_dwt_k": 242000,
+    "port_teu_k": 76500
+  },
+  {
+    "country": "NLD",
+    "period": "2024-Q1",
+    "lsci": 94.2,
+    "fleet_dwt_k": 9800,
+    "port_teu_k": 3800
+  },
+  {
+    "country": "USA",
+    "period": "2024-Q1",
+    "lsci": 115.8,
+    "fleet_dwt_k": 12500,
+    "port_teu_k": 14200
+  },
+  {
+    "country": "SGP",
+    "period": "2024-Q1",
+    "lsci": 142.1,
+    "fleet_dwt_k": 138000,
+    "port_teu_k": 9900
+  },
+  {
+    "country": "CHN",
+    "period": "2024-Q2",
+    "lsci": 181.2,
+    "fleet_dwt_k": 248000,
+    "port_teu_k": 79100
+  },
+  {
+    "country": "NLD",
+    "period": "2024-Q2",
+    "lsci": 95.1,
+    "fleet_dwt_k": 9900,
+    "port_teu_k": 3950
+  },
+  {
+    "country": "USA",
+    "period": "2024-Q2",
+    "lsci": 116.4,
+    "fleet_dwt_k": 12700,
+    "port_teu_k": 14800
+  },
+  {
+    "country": "SGP",
+    "period": "2024-Q2",
+    "lsci": 143.9,
+    "fleet_dwt_k": 141000,
+    "port_teu_k": 10200
+  }
+]

@@ -1,0 +1,716 @@
+{
+  "champion": {
+    "version": "v2.5",
+    "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+    "status": "champion",
+    "artifact_file": "model_v2_5.joblib",
+    "registered_at": "2026-09-17T05:57:22.043547+00:00",
+    "metrics": {
+      "mae": 43.41,
+      "rmse": 61.22,
+      "mape": 1.33,
+      "r2": 0.9962,
+      "directional_accuracy": 95.4,
+      "smape": 1.33,
+      "interval_coverage": 95.0
+    },
+    "features_hash": "071761d95830"
+  },
+  "challenger": {
+    "version": "v2.5-h30",
+    "algorithm": "HistGradientBoostingRegressor",
+    "status": "challenger",
+    "artifact_file": "model_v2_5-h30.joblib",
+    "registered_at": "2026-09-16T19:12:52.265057+00:00",
+    "metrics": {
+      "mae": 46.09,
+      "rmse": 68.78,
+      "smape": 1.07,
+      "wape": 1.07,
+      "directional_accuracy": 95.62,
+      "interval_coverage": 96.24
+    },
+    "features_hash": "2810ffdb65fd"
+  },
+  "history": [
+    {
+      "version": "v2.4",
+      "algorithm": "Bayesian Prophet + LightGBM + Bi-LSTM",
+      "status": "champion",
+      "artifact_file": "ensemble_m3_v2.4.joblib",
+      "last_promoted": "2026-09-15T22:29:33.254045+00:00",
+      "metrics": {
+        "mae": 114.5,
+        "rmse": 168.2,
+        "smape": 3.62,
+        "directional_accuracy": 91.8,
+        "interval_coverage": 94.8
+      }
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T19:47:10.074519+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T19:51:03.926439+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T19:51:05.520332+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T19:55:17.839881+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T19:55:19.927389+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T20:02:32.183153+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T20:02:33.409662+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T20:43:24.447729+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T20:43:25.711453+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T20:48:03.120883+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T20:48:04.423871+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T20:53:27.332365+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T20:53:28.772448+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T21:12:21.016289+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T21:12:22.233139+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T21:34:40.415865+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T21:34:41.801784+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T21:39:05.482608+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T21:39:06.672371+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T21:56:33.753563+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T21:56:35.992111+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T21:57:52.265720+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T21:57:54.132052+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T22:29:15.954636+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-16T22:29:17.916030+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    },
+    {
+      "version": "v2.5",
+      "algorithm": "XGBoost Multi-Horizon Delta Estimator + Empirical 95% Uncertainty",
+      "status": "champion",
+      "artifact_file": "model_v2_5.joblib",
+      "registered_at": "2026-09-17T05:57:20.017496+00:00",
+      "metrics": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "features_hash": "071761d95830"
+    }
+  ],
+  "horizons": {
+    "1W_7D": {
+      "Baseline_Naive": {
+        "mae": 106.52,
+        "rmse": 129.56,
+        "mape": 3.26,
+        "r2": 0.9828,
+        "directional_accuracy": 0.0
+      },
+      "Baseline_MovingAverage": {
+        "mae": 185.2,
+        "rmse": 221.19,
+        "mape": 5.67,
+        "r2": 0.9498,
+        "directional_accuracy": 10.34
+      },
+      "Baseline_ExpSmoothing": {
+        "mae": 143.06,
+        "rmse": 172.95,
+        "mape": 4.38,
+        "r2": 0.9693,
+        "directional_accuracy": 5.75
+      },
+      "ML_Ridge": {
+        "mae": 116.48,
+        "rmse": 129.35,
+        "mape": 4.0,
+        "r2": 0.9828,
+        "directional_accuracy": 47.13
+      },
+      "ML_RandomForest": {
+        "mae": 38.16,
+        "rmse": 51.63,
+        "mape": 1.2,
+        "r2": 0.9973,
+        "directional_accuracy": 94.25
+      },
+      "ML_XGBoost": {
+        "mae": 43.41,
+        "rmse": 61.22,
+        "mape": 1.33,
+        "r2": 0.9962,
+        "directional_accuracy": 95.4,
+        "smape": 1.33,
+        "interval_coverage": 95.0
+      },
+      "ML_LightGBM": {
+        "mae": 40.94,
+        "rmse": 55.64,
+        "mape": 1.27,
+        "r2": 0.9968,
+        "directional_accuracy": 93.1
+      }
+    },
+    "2W_14D": {
+      "Baseline_Naive": {
+        "mae": 158.74,
+        "rmse": 191.77,
+        "mape": 4.86,
+        "r2": 0.9623,
+        "directional_accuracy": 1.15
+      },
+      "Baseline_MovingAverage": {
+        "mae": 238.44,
+        "rmse": 282.8,
+        "mape": 7.31,
+        "r2": 0.9179,
+        "directional_accuracy": 10.34
+      },
+      "Baseline_ExpSmoothing": {
+        "mae": 195.43,
+        "rmse": 234.54,
+        "mape": 5.98,
+        "r2": 0.9435,
+        "directional_accuracy": 10.34
+      },
+      "ML_Ridge": {
+        "mae": 172.72,
+        "rmse": 195.32,
+        "mape": 5.87,
+        "r2": 0.9608,
+        "directional_accuracy": 43.68
+      },
+      "ML_RandomForest": {
+        "mae": 74.09,
+        "rmse": 99.27,
+        "mape": 2.33,
+        "r2": 0.9899,
+        "directional_accuracy": 91.95
+      },
+      "ML_XGBoost": {
+        "mae": 71.05,
+        "rmse": 97.37,
+        "mape": 2.19,
+        "r2": 0.9903,
+        "directional_accuracy": 95.4
+      },
+      "ML_LightGBM": {
+        "mae": 72.59,
+        "rmse": 98.51,
+        "mape": 2.27,
+        "r2": 0.99,
+        "directional_accuracy": 88.51
+      }
+    },
+    "4W_28D": {
+      "Baseline_Naive": {
+        "mae": 264.68,
+        "rmse": 314.61,
+        "mape": 8.12,
+        "r2": 0.8984,
+        "directional_accuracy": 0.0
+      },
+      "Baseline_MovingAverage": {
+        "mae": 347.43,
+        "rmse": 406.96,
+        "mape": 10.68,
+        "r2": 0.83,
+        "directional_accuracy": 6.9
+      },
+      "Baseline_ExpSmoothing": {
+        "mae": 302.9,
+        "rmse": 357.74,
+        "mape": 9.31,
+        "r2": 0.8687,
+        "directional_accuracy": 6.9
+      },
+      "ML_Ridge": {
+        "mae": 296.86,
+        "rmse": 336.04,
+        "mape": 10.02,
+        "r2": 0.8841,
+        "directional_accuracy": 36.78
+      },
+      "ML_RandomForest": {
+        "mae": 174.77,
+        "rmse": 228.51,
+        "mape": 5.33,
+        "r2": 0.9464,
+        "directional_accuracy": 71.26
+      },
+      "ML_XGBoost": {
+        "mae": 124.48,
+        "rmse": 178.42,
+        "mape": 3.87,
+        "r2": 0.9673,
+        "directional_accuracy": 97.7
+      },
+      "ML_LightGBM": {
+        "mae": 131.54,
+        "rmse": 185.95,
+        "mape": 4.12,
+        "r2": 0.9645,
+        "directional_accuracy": 100.0
+      }
+    }
+  },
+  "dataset_audit": {
+    "version": "v2.0-h7d",
+    "horizon_days": 7,
+    "horizon_steps": 1,
+    "target_col": "target_t_plus_7d",
+    "delta_col": "delta_t_plus_7d",
+    "feature_names": [
+      "rate_lag_1w",
+      "rate_lag_2w",
+      "rate_lag_4w",
+      "rate_lag_8w",
+      "rate_lag_12w",
+      "rolling_mean_4w",
+      "rolling_mean_8w",
+      "rolling_mean_12w",
+      "rolling_std_4w",
+      "rolling_std_12w",
+      "volatility_ratio_4_12",
+      "rate_diff_1w",
+      "rate_pct_change_1w",
+      "momentum_4w",
+      "momentum_12w",
+      "month",
+      "quarter",
+      "week_of_year",
+      "sin_week",
+      "cos_week",
+      "is_q3_peak",
+      "is_q4_inventory",
+      "route_is_sha_rot",
+      "route_is_sha_lax",
+      "route_is_rot_nyc",
+      "india_total_cargo_tonnes",
+      "india_container_teu",
+      "india_export_tonnes",
+      "india_import_tonnes",
+      "india_vessel_calls",
+      "india_avg_osbd_tonnes",
+      "india_avg_turnaround_hours",
+      "india_avg_berth_utilization",
+      "india_cargo_mom",
+      "india_teu_mom",
+      "world_gdp_growth"
+    ],
+    "feature_count": 36,
+    "routes": [
+      "route-rot-nyc",
+      "route-sha-lax",
+      "route-sha-rot"
+    ],
+    "total_rows": 564,
+    "train_rows": 393,
+    "val_rows": 84,
+    "test_rows": 87,
+    "train_date_min": "2021-01-15 00:00:00",
+    "train_date_max": "2023-07-14 00:00:00",
+    "val_date_min": "2023-07-21 00:00:00",
+    "val_date_max": "2024-01-26 00:00:00",
+    "test_date_min": "2024-02-02 00:00:00",
+    "test_date_max": "2024-08-16 00:00:00",
+    "missing_values_count": 114,
+    "duplicate_rows_count": 0,
+    "leakage_checks_passed": true,
+    "leakage_reasons": [],
+    "dataset_hash": "071761d95830e80d7f73e6c65685f4518a66fdf6fde573eb2f02ebc76c988b98"
+  }
+}

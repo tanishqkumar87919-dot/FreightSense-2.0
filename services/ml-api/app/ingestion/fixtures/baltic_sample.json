@@ -1,0 +1,44 @@
+[
+  {
+    "date": "2024-08-26",
+    "route_code": "FBX01",
+    "name": "China/East Asia to US West Coast",
+    "rate_usd": 4820,
+    "daily_change": 45
+  },
+  {
+    "date": "2024-08-26",
+    "route_code": "FBX11",
+    "name": "China/East Asia to North Europe",
+    "rate_usd": 4210,
+    "daily_change": -35
+  },
+  {
+    "date": "2024-09-02",
+    "route_code": "FBX01",
+    "name": "China/East Asia to US West Coast",
+    "rate_usd": 4860,
+    "daily_change": 40
+  },
+  {
+    "date": "2024-09-02",
+    "route_code": "FBX11",
+    "name": "China/East Asia to North Europe",
+    "rate_usd": 4195,
+    "daily_change": -15
+  },
+  {
+    "date": "2024-09-09",
+    "route_code": "FBX01",
+    "name": "China/East Asia to US West Coast",
+    "rate_usd": 4890,
+    "daily_change": 30
+  },
+  {
+    "date": "2024-09-09",
+    "route_code": "FBX11",
+    "name": "China/East Asia to North Europe",
+    "rate_usd": 4180,
+    "daily_change": -15
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "imo": "9811000",
+    "vessel_name": "Ever Given",
+    "type": "Container Ship",
+    "lat": 31.5,
+    "lon": 122.1,
+    "speed_knots": 18.4,
+    "heading": 135,
+    "status": "Underway Using Engine",
+    "timestamp": "2024-09-14T08:00:00Z"
+  },
+  {
+    "imo": "9839438",
+    "vessel_name": "HMM Algeciras",
+    "type": "Container Ship",
+    "lat": 1.2,
+    "lon": 103.9,
+    "speed_knots": 14.2,
+    "heading": 280,
+    "status": "Underway Using Engine",
+    "timestamp": "2024-09-14T08:00:00Z"
+  },
+  {
+    "imo": "9708863",
+    "vessel_name": "MSC Maya",
+    "type": "Container Ship",
+    "lat": 51.9,
+    "lon": 4.1,
+    "speed_knots": 0.2,
+    "heading": 45,
+    "status": "Moored",
+    "timestamp": "2024-09-14T08:00:00Z"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "period": "2024-08",
+    "product": "Bunker VLSFO",
+    "location": "Rotterdam",
+    "price_usd_mt": 612.5
+  },
+  {
+    "period": "2024-08",
+    "product": "Bunker VLSFO",
+    "location": "Singapore",
+    "price_usd_mt": 628.0
+  },
+  {
+    "period": "2024-09",
+    "product": "Bunker VLSFO",
+    "location": "Rotterdam",
+    "price_usd_mt": 605.0
+  },
+  {
+    "period": "2024-09",
+    "product": "Bunker VLSFO",
+    "location": "Singapore",
+    "price_usd_mt": 618.5
+  }
+]

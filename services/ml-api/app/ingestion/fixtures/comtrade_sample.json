@@ -1,0 +1,50 @@
+[
+  {
+    "reporter": "CHN",
+    "partner": "USA",
+    "period": "2024-06",
+    "trade_value_usd": 45200000000,
+    "net_weight_kg": 9800000000,
+    "commodity": "Manufactured Goods"
+  },
+  {
+    "reporter": "CHN",
+    "partner": "NLD",
+    "period": "2024-06",
+    "trade_value_usd": 10500000000,
+    "net_weight_kg": 2400000000,
+    "commodity": "Electronics & Machinery"
+  },
+  {
+    "reporter": "NLD",
+    "partner": "USA",
+    "period": "2024-06",
+    "trade_value_usd": 6800000000,
+    "net_weight_kg": 1500000000,
+    "commodity": "Chemicals & Equipment"
+  },
+  {
+    "reporter": "CHN",
+    "partner": "USA",
+    "period": "2024-07",
+    "trade_value_usd": 46800000000,
+    "net_weight_kg": 10100000000,
+    "commodity": "Manufactured Goods"
+  },
+  {
+    "reporter": "CHN",
+    "partner": "NLD",
+    "period": "2024-07",
+    "trade_value_usd": 10900000000,
+    "net_weight_kg": 2480000000,
+    "commodity": "Electronics & Machinery"
+  },
+  {
+    "reporter": "NLD",
+    "partner": "USA",
+    "period": "2024-07",
+    "trade_value_usd": 7100000000,
+    "net_weight_kg": 1560000000,
+    "commodity": "Chemicals & Equipment"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "date": "2024-08-01",
+    "series_id": "DTWEXBGS",
+    "name": "Trade Weighted U.S. Dollar Index",
+    "value": 121.85
+  },
+  {
+    "date": "2024-08-15",
+    "series_id": "DTWEXBGS",
+    "name": "Trade Weighted U.S. Dollar Index",
+    "value": 122.1
+  },
+  {
+    "date": "2024-09-01",
+    "series_id": "DTWEXBGS",
+    "name": "Trade Weighted U.S. Dollar Index",
+    "value": 121.4
+  },
+  {
+    "date": "2024-08-01",
+    "series_id": "GASDESW",
+    "name": "US Diesel Retail Price USD/Gal",
+    "value": 3.75
+  },
+  {
+    "date": "2024-09-01",
+    "series_id": "GASDESW",
+    "name": "US Diesel Retail Price USD/Gal",
+    "value": 3.68
+  }
+]

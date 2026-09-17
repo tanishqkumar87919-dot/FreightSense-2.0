@@ -1,0 +1,30 @@
+[
+  {
+    "month": "2024-05",
+    "oceangoing_transits": 842,
+    "neopanamax_transits": 268,
+    "net_tonnage_k": 32500,
+    "max_draft_ft": 44.0
+  },
+  {
+    "month": "2024-06",
+    "oceangoing_transits": 864,
+    "neopanamax_transits": 274,
+    "net_tonnage_k": 33100,
+    "max_draft_ft": 45.0
+  },
+  {
+    "month": "2024-07",
+    "oceangoing_transits": 890,
+    "neopanamax_transits": 285,
+    "net_tonnage_k": 34200,
+    "max_draft_ft": 46.5
+  },
+  {
+    "month": "2024-08",
+    "oceangoing_transits": 915,
+    "neopanamax_transits": 298,
+    "net_tonnage_k": 35400,
+    "max_draft_ft": 48.0
+  }
+]
