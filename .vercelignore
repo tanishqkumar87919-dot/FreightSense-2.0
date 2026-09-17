@@ -4,20 +4,22 @@
 # Backend is deployed separately to Render (https://freightsense-2-0.onrender.com).
 # ==============================================================================
 
-# Backend FastAPI service (Deployed on Render)
-services/
-services/**
+# Backend FastAPI service (Deployed on Render - root level only)
+/services/
+/services/**
+!src/services/
+!src/services/**
 
-# Supabase database migrations and DDL
-supabase/
-supabase/**
+# Supabase database migrations and DDL (Root level only)
+/supabase/
+/supabase/**
 
 # Render deployment configuration
-render.yaml
+/render.yaml
 
 # Python virtualenvs, bytecode, and test caches
-.venv/
-venv/
+/.venv/
+/venv/
 __pycache__/
 *.pyc
 *.pyo
@@ -28,9 +30,10 @@ __pycache__/
 # Large ML model artifacts and training datasets
 *.joblib
 *.pkl
-services/ml-api/artifacts/
-services/ml-api/data/
+/services/ml-api/artifacts/
+/services/ml-api/data/
 
 # Local environment files (Already in .gitignore, excluded from deployment)
 .env.local
 .env.*.local
+
