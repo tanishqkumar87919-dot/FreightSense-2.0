@@ -1048,6 +1048,126 @@ function ScenarioSimulatorInner() {
             </div>
           )}
 
+          {/* CAUSAL DELTA INSPECTOR: WHAT CHANGED, WHY DID IT CHANGE, WHICH CONSTRAINT DROVE IT */}
+          {simulationResponse && (
+            <div className="glass-card rounded-2xl border border-sky-500/30 bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 text-white p-6 shadow-xl space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-700/60 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 rounded-xl bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm sm:text-base font-extrabold text-white">
+                      Causal Delta Inspector (SIH What-If Explainability)
+                    </h3>
+                    <p className="text-xs text-slate-300 mt-0.5">
+                      Clear traceability: What parameters altered, economic formula breakdown, and binding constraints
+                    </p>
+                  </div>
+                </div>
+
+                <Link
+                  href={`/decision-center?cargo=${encodeURIComponent(baseParams.commodity_name || 'Coking Coal')}&vessel=${encodeURIComponent(simOverrides.vessel_class)}&origin=${encodeURIComponent(baseParams.origin_port || 'Newcastle, Australia')}&destination=${encodeURIComponent(simOverrides.destination_port_id)}&freight=${simOverrides.freight_rate_usd_mt}&bunker=${simOverrides.bunker_price_usd_mt}`}
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-sm shadow-emerald-600/30"
+                >
+                  <Layers className="w-4 h-4" />
+                  <span>Send Scenario to Decision Center</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                {/* 1. What Changed */}
+                <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 space-y-2">
+                  <div className="flex items-center gap-1.5 text-sky-400 font-bold uppercase text-[11px]">
+                    <SlidersHorizontal className="w-4 h-4" />
+                    <span>1. What Changed?</span>
+                  </div>
+                  <p className="text-slate-300 text-[11px]">
+                    Active user perturbations applied over baseline charter:
+                  </p>
+                  <div className="space-y-1.5 pt-1">
+                    <div className="p-2 rounded-lg bg-slate-900/60 border border-slate-700/60 flex items-center justify-between">
+                      <span className="text-slate-400">Anchorage Waiting</span>
+                      <span className="font-bold text-amber-300">{baseParams.base_port_waiting_days}d → {simOverrides.port_waiting_days}d ({simOverrides.port_waiting_days > baseParams.base_port_waiting_days ? '+' : ''}{(simOverrides.port_waiting_days - baseParams.base_port_waiting_days).toFixed(1)}d)</span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-slate-900/60 border border-slate-700/60 flex items-center justify-between">
+                      <span className="text-slate-400">Bunker Fuel Price</span>
+                      <span className="font-bold text-sky-300">${baseParams.base_bunker_price_usd_mt} → ${simOverrides.bunker_price_usd_mt}/MT</span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-slate-900/60 border border-slate-700/60 flex items-center justify-between">
+                      <span className="text-slate-400">Vessel Class</span>
+                      <span className="font-bold text-slate-100">{baseParams.base_vessel_class} → {simOverrides.vessel_class}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Why Did It Change */}
+                <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 space-y-2">
+                  <div className="flex items-center gap-1.5 text-emerald-400 font-bold uppercase text-[11px]">
+                    <DollarSign className="w-4 h-4" />
+                    <span>2. Why Did It Change?</span>
+                  </div>
+                  <p className="text-slate-300 text-[11px]">
+                    Deterministic voyage economics variance calculations:
+                  </p>
+                  <div className="space-y-1.5 pt-1">
+                    <div className="p-2 rounded-lg bg-slate-900/60 border border-slate-700/60 flex items-center justify-between">
+                      <span className="text-slate-400">Demurrage Penalty</span>
+                      <span className="font-bold text-amber-300">
+                        {simulationResponse.simulated_economics.demurrage_exposure_usd > simulationResponse.base_economics.demurrage_exposure_usd
+                          ? `+$${(simulationResponse.simulated_economics.demurrage_exposure_usd - simulationResponse.base_economics.demurrage_exposure_usd).toLocaleString()}`
+                          : '$0'}
+                      </span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-slate-900/60 border border-slate-700/60 flex items-center justify-between">
+                      <span className="text-slate-400">Total Bunker Outlay</span>
+                      <span className="font-bold text-sky-300">
+                        {simulationResponse.simulated_economics.total_bunker_cost_usd >= simulationResponse.base_economics.total_bunker_cost_usd ? '+' : ''}
+                        ${(simulationResponse.simulated_economics.total_bunker_cost_usd - simulationResponse.base_economics.total_bunker_cost_usd).toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-slate-900/60 border border-slate-700/60 flex items-center justify-between">
+                      <span className="text-slate-400">Net Outlay Delta</span>
+                      <span className={`font-bold ${simulationResponse.delta_total_outlay_usd > 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
+                        {simulationResponse.delta_total_outlay_usd > 0 ? '+' : ''}${Math.round(simulationResponse.delta_total_outlay_usd).toLocaleString()} ({simulationResponse.delta_percentage_outlay > 0 ? '+' : ''}{simulationResponse.delta_percentage_outlay}%)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Which Constraint Drove It */}
+                <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 space-y-2">
+                  <div className="flex items-center gap-1.5 text-amber-400 font-bold uppercase text-[11px]">
+                    <ShieldAlert className="w-4 h-4" />
+                    <span>3. Binding Constraints</span>
+                  </div>
+                  <p className="text-slate-300 text-[11px]">
+                    Port infrastructure and charter party thresholds:
+                  </p>
+                  <div className="space-y-1.5 pt-1">
+                    <div className="p-2 rounded-lg bg-slate-900/60 border border-slate-700/60">
+                      <div className="text-[10px] text-slate-400">Draft Clearance (UKC)</div>
+                      <div className="font-bold text-emerald-400 mt-0.5">
+                        {simulationResponse.simulated_port_compatibility.is_compliant
+                          ? `Safe (+${simulationResponse.simulated_port_compatibility.ukc_available_m}m margin)`
+                          : `Violated (${simulationResponse.simulated_port_compatibility.restrictions_found[0] || 'Draft exceeds limit'})`}
+                      </div>
+                    </div>
+                    <div className="p-2 rounded-lg bg-slate-900/60 border border-slate-700/60">
+                      <div className="text-[10px] text-slate-400">Anchorage Laytime Rule</div>
+                      <div className="font-bold text-slate-200 mt-0.5">
+                        {simOverrides.port_waiting_days > 2.0
+                          ? 'Congestion exceeds allowed 48h laytime → Demurrage triggered'
+                          : 'Within typical operational turnaround window'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* SENSITIVITY ANALYSIS CURVES (RECHARTS) */}
           {simulationResponse && currentSensitivityTable && (
             <div className="glass-card rounded-2xl border border-slate-200/90 p-6 shadow-sm space-y-4">

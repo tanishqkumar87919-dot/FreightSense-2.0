@@ -614,6 +614,10 @@ def evaluate_decision_center(req: DecisionCenterEvaluateRequest):
         "voyage_economics": "CALCULATED",
         "scenario_variance": "SIMULATED",
         "evidence_state": "CALCULATED",
+        "epistemic_port_limits": "KNOWN",
+        "epistemic_forecast": "ESTIMATED",
+        "epistemic_what_if": "SIMULATED",
+        "epistemic_unobserved": "UNKNOWN",
     }
 
     # ------------------------------------------------------------------

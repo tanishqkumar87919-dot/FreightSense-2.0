@@ -15,9 +15,14 @@ import {
   Compass,
   SlidersHorizontal,
   ChevronDown,
+  Sparkles,
+  Database,
+  ShieldCheck,
 } from 'lucide-react';
 import { useNotifications } from '@/context/NotificationContext';
 import { usePreferences } from '@/context/PreferencesContext';
+import { SihDemoGuide } from '@/components/demo/SihDemoGuide';
+import { DataQualityModal } from '@/components/ui/DataQualityModal';
 
 interface NavbarProps {
   onOpenCommandPalette: () => void;
@@ -29,6 +34,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
   const { preferences } = usePreferences();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [demoGuideOpen, setDemoGuideOpen] = useState(false);
+  const [dataQualityOpen, setDataQualityOpen] = useState(false);
 
   // Don't show regular floating nav on onboarding or auth pages if desired, but prompt says:
   // "Global navigation: Overview, Intelligence, Forecast, Market, Routes, Ports, Vessels, Alerts, Reports"
@@ -205,6 +212,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
             )}
           </Link>
 
+          {/* Data Quality & ML Transparency Modal Trigger */}
+          <button
+            type="button"
+            onClick={() => setDataQualityOpen(true)}
+            className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition-colors"
+            title="System Data Quality, Feeds & ML Model Transparency"
+          >
+            <Database className="w-4 h-4 text-slate-600" />
+          </button>
+
+          {/* SIH Demo Mode Button */}
+          <button
+            type="button"
+            onClick={() => setDemoGuideOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-all shadow-sm shadow-emerald-600/20"
+            title="Launch 10-Step Guided SIH Evaluator Walkthrough"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span className="hidden md:inline">SIH Demo</span>
+          </button>
+
           {/* Help / Docs */}
           <Link
             href="/docs"
@@ -318,6 +346,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
           </div>
         </div>
       )}
+      {/* SIH 10-Step Interactive Demo Walkthrough Controller */}
+      <SihDemoGuide isOpen={demoGuideOpen} onClose={() => setDemoGuideOpen(false)} />
+
+      {/* Data Feeds & ML Model Transparency Audit Modal */}
+      <DataQualityModal isOpen={dataQualityOpen} onClose={() => setDataQualityOpen(false)} />
     </header>
   );
 };

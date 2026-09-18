@@ -33,6 +33,8 @@ import {
 } from 'lucide-react';
 import { ForecastChart } from '@/components/charts/ForecastChart';
 import { Modal } from '@/components/ui/Modal';
+import { ProvenanceBadge } from '@/components/ui/ProvenanceBadge';
+import { ForecastExplainabilityModal } from '@/components/forecast/ForecastExplainabilityModal';
 import { forecastService, feedbackService } from '@/services';
 import {
   mockRouteForecasts,
@@ -166,6 +168,7 @@ function ForecastContent() {
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<string | null>(null);
 
   // Modals state
+  const [isExplainabilityModalOpen, setIsExplainabilityModalOpen] = useState(false);
   const [isDiscrepancyModalOpen, setIsDiscrepancyModalOpen] = useState(false);
   const [isObservationModalOpen, setIsObservationModalOpen] = useState(false);
   const [discrepancyComment, setDiscrepancyComment] = useState('');
@@ -299,6 +302,14 @@ function ForecastContent() {
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={() => setIsExplainabilityModalOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-sky-50 border border-sky-200 text-sky-800 hover:bg-sky-100 text-xs font-semibold shadow-2xs transition-colors"
+            title="Inspect Causal Drivers and Model Explainability"
+          >
+            <Sparkles className="w-4 h-4 text-sky-600 animate-pulse" />
+            <span>Why This Forecast?</span>
+          </button>
           <button
             onClick={() => setIsObservationModalOpen(true)}
             className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-2xs transition-colors"
@@ -1176,6 +1187,20 @@ function ForecastContent() {
           </div>
         </form>
       </Modal>
+
+      {/* Causal Explainability & Evidence Modal */}
+      <ForecastExplainabilityModal
+        isOpen={isExplainabilityModalOpen}
+        onClose={() => setIsExplainabilityModalOpen(false)}
+        corridorName={activeCorridor.name}
+        commodityName={paramCargo || activeCorridor.cargo}
+        predictedRate={forecastData?.expectedRateUsd || activeCorridor.baselineRate}
+        rateUnit={displayUnit}
+        confidenceLower={forecastData?.confidenceInterval?.lower}
+        confidenceUpper={forecastData?.confidenceInterval?.upper}
+        horizonDays={horizon === '7D' ? 7 : horizon === '30D' ? 30 : horizon === '90D' ? 90 : 14}
+        causalExplanations={mockForecastCausalExplanations[selectedRouteId] || []}
+      />
     </div>
   );
 }
