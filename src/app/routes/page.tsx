@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import {
   Navigation,
   ArrowRight,
@@ -24,12 +25,39 @@ import { useWatchlist } from '@/context/WatchlistContext';
 import { routeService } from '@/services';
 import { RouteItem } from '@/types';
 
-export default function RoutesPage() {
-  const [selectedRouteId, setSelectedRouteId] = useState('route-sha-rot');
+function RoutesContent() {
+  const searchParams = useSearchParams();
+  const paramRoute = searchParams.get('route');
+  const paramCargo = searchParams.get('cargo');
+  const paramOrigin = searchParams.get('origin');
+  const paramDestination = searchParams.get('destination');
+  const paramVessel = searchParams.get('vessel');
+  const paramQuantity = searchParams.get('quantity');
+
+  const getInitialRouteId = () => {
+    if (paramRoute && mockRoutes.some(r => r.id === paramRoute)) {
+      return paramRoute;
+    }
+    if (paramDestination) {
+      const lower = paramDestination.toLowerCase();
+      if (lower.includes('paradip')) return 'route-aus-paradip';
+      if (lower.includes('vizag') || lower.includes('visakha')) return 'route-indo-vizag';
+      if (lower.includes('haldia')) return 'route-saf-haldia';
+    }
+    return 'route-aus-paradip';
+  };
+
+  const [selectedRouteId, setSelectedRouteId] = useState(getInitialRouteId);
   const [routes, setRoutes] = useState<RouteItem[]>(mockRoutes);
   const { addItem, isSaved, removeItem } = useWatchlist();
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (paramRoute && routes.some(r => r.id === paramRoute)) {
+      setSelectedRouteId(paramRoute);
+    }
+  }, [paramRoute, routes]);
+
+  useEffect(() => {
     routeService.getRoutes().then((res) => {
       if (res && res.length > 0) {
         setRoutes(res);
@@ -104,6 +132,41 @@ export default function RoutesPage() {
           >
             <Bell className="w-3.5 h-3.5" />
             <span>Set Route Alert</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* STEP 2 END-TO-END WORKFLOW BRIDGE BANNER */}
+      <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 text-white rounded-2xl p-4 sm:p-5 border border-sky-500/30 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded-full bg-sky-500/20 border border-sky-400/40 text-sky-300 font-mono text-[10px] uppercase font-bold tracking-wider">
+              Step 2 of 8: Route & Corridor Intelligence
+            </span>
+            <span className="text-xs text-slate-300">Active Cargo Requirement:</span>
+            <span className="text-xs font-bold text-white">
+              {paramCargo || 'Overseas Bulk Cargo'} ({Number(paramQuantity || 75000).toLocaleString()} MT)
+            </span>
+          </div>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Corridor: <strong className="text-white">{currentRoute.name}</strong> • Distance: <strong className="text-white">{currentRoute.distanceNm?.toLocaleString?.() || currentRoute.distanceNm} nm</strong> • Transit: <strong className="text-white">{currentRoute.transitDays} days</strong>
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <Link
+            href={`/forecast?route=${encodeURIComponent(currentRoute.id)}&cargo=${encodeURIComponent(paramCargo || 'Thermal Coal')}&origin=${encodeURIComponent(paramOrigin || currentRoute.origin)}&destination=${encodeURIComponent(paramDestination || currentRoute.destination)}&vessel=${encodeURIComponent(paramVessel || 'Panamax')}&quantity=${paramQuantity || '75000'}`}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs shadow-md transition-all hover:scale-[1.02]"
+          >
+            <span>Step 3: AI Freight Forecast</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link
+            href={`/decision-center?route=${encodeURIComponent(currentRoute.id)}&cargo=${encodeURIComponent(paramCargo || 'Thermal Coal')}&origin=${encodeURIComponent(paramOrigin || currentRoute.origin)}&destination=${encodeURIComponent(paramDestination || currentRoute.destination)}&vessel=${encodeURIComponent(paramVessel || 'Panamax')}&quantity=${paramQuantity || '75000'}&freight=${currentRoute.spotRateUsd}`}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition-colors"
+          >
+            <Layers className="w-3.5 h-3.5 text-slate-400" />
+            <span>Direct to Decision Center</span>
           </Link>
         </div>
       </div>
@@ -287,5 +350,13 @@ export default function RoutesPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RoutesPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-slate-500 text-xs">Loading Route Intelligence...</div>}>
+      <RoutesContent />
+    </Suspense>
   );
 }

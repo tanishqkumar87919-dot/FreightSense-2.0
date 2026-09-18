@@ -303,6 +303,38 @@ function VesselsContent() {
                 </span>
               </div>
             </div>
+
+            <div className="mt-4 pt-3 border-t border-slate-700/80 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2 text-slate-400 text-[11px]">
+                <span className="font-semibold text-slate-300">Next Steps in Decision Workflow:</span>
+                <span>Evaluate port constraints & simulate what-if scenarios for this charter</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  href={`/ports?destination=${encodeURIComponent(cargoRequirement.destinationPort)}&cargo=${encodeURIComponent(cargoRequirement.commodity)}&quantity=${cargoRequirement.quantityMt}&vessel=${encodeURIComponent(cargoRequirement.preferredClass)}`}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs shadow-sm transition-all"
+                >
+                  <Anchor className="w-3.5 h-3.5" />
+                  <span>Step 5: Port Intelligence</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+                <Link
+                  href={`/scenario?cargo=${encodeURIComponent(cargoRequirement.commodity)}&origin=${encodeURIComponent(cargoRequirement.originPort)}&destination=${encodeURIComponent(cargoRequirement.destinationPort)}&vessel=${encodeURIComponent(cargoRequirement.preferredClass)}&quantity=${cargoRequirement.quantityMt}&freight=${targetFreight}&bunker=${bunkerFuelPrice}`}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-sm transition-all"
+                >
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                  <span>Step 6: Scenario Simulator</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+                <Link
+                  href={`/decision-center?cargo=${encodeURIComponent(cargoRequirement.commodity)}&origin=${encodeURIComponent(cargoRequirement.originPort)}&destination=${encodeURIComponent(cargoRequirement.destinationPort)}&vessel=${encodeURIComponent(cargoRequirement.preferredClass)}&quantity=${cargoRequirement.quantityMt}&freight=${targetFreight}&bunker=${bunkerFuelPrice}`}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition-colors"
+                >
+                  <Layers className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Step 7: Decision Center</span>
+                </Link>
+              </div>
+            </div>
           </div>
 
           {/* SECTION 2: CANDIDATE BULK VESSELS COMPARISON MATRIX */}

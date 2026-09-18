@@ -34,6 +34,7 @@ import {
   FileText,
   Check,
   Building,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { MetricCard } from '@/components/ui/MetricCard';
@@ -327,11 +328,26 @@ function PortsPageContent() {
                   href={`/vessels?tab=chartering&destination=${selectedEastCoastPortId}&cargo=${encodeURIComponent(
                     selectedCommodity
                   )}&quantity=${cargoQuantity}&vessel=${selectedVesselClass}`}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-sky-600 text-white text-xs font-bold hover:bg-sky-700 transition-colors shadow-xs"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition-colors shadow-2xs"
                 >
-                  <Ship className="w-3.5 h-3.5" />
-                  <span>Chartering Optimization</span>
+                  <Ship className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Vessel Fit</span>
+                </Link>
+                <Link
+                  href={`/scenario?cargo=${encodeURIComponent(selectedCommodity)}&destination=${selectedEastCoastPortId}&quantity=${cargoQuantity}&vessel=${selectedVesselClass}&origin=${encodeURIComponent(paramOrigin)}`}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-xs"
+                >
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                  <span>Step 6: Scenario Simulator</span>
                   <ChevronRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href={`/decision-center?cargo=${encodeURIComponent(selectedCommodity)}&destination=${selectedEastCoastPortId}&quantity=${cargoQuantity}&vessel=${selectedVesselClass}&origin=${encodeURIComponent(paramOrigin)}`}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition-all shadow-xs"
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Step 7: Decision Center</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>

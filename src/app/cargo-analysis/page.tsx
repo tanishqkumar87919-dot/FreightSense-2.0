@@ -993,6 +993,44 @@ export default function CargoAnalysisPage() {
               <span className="text-xs text-sky-400 font-semibold">5 Integrated Modules</span>
             </div>
 
+            {/* PRIMARY END-TO-END WORKFLOW BRIDGE */}
+            <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-sky-900/80 via-indigo-900/80 to-slate-900 border border-sky-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                  <Compass className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold tracking-wider text-sky-400 uppercase">
+                    Continuous Decision Workflow (Step 1 Complete)
+                  </span>
+                  <h4 className="text-sm font-bold text-white">
+                    Requirement Analyzed: {cargoQuantity.toLocaleString()} MT {cargoType}
+                  </h4>
+                  <p className="text-xs text-slate-300">
+                    Ready to evaluate shipping corridor and East Coast India port discharge constraints.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 flex-wrap">
+                <Link
+                  href={analysisResult ? `/routes?route=${analysisResult.routeContext.routeId}&cargo=${encodeURIComponent(analysisResult.cargoRequirement.commodityName)}&origin=${encodeURIComponent(analysisResult.routeContext.originPort)}&destination=${encodeURIComponent(analysisResult.portContext.destinationPortName)}&vessel=${encodeURIComponent(analysisResult.vesselContext.vesselClass)}&quantity=${analysisResult.cargoRequirement.cargoQuantityMt}` : `/routes?cargo=${encodeURIComponent(cargoType)}&origin=${encodeURIComponent(originPort)}&destination=${destinationPort}&quantity=${cargoQuantity}&vessel=${preferredVesselType}`}
+                  className="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-sm"
+                >
+                  <span>Step 2: Route Analysis</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+
+                <Link
+                  href={analysisResult ? `/decision-center?cargo=${encodeURIComponent(analysisResult.cargoRequirement.commodityName)}&quantity=${analysisResult.cargoRequirement.cargoQuantityMt}&origin=${encodeURIComponent(analysisResult.routeContext.originPort)}&destination=${encodeURIComponent(analysisResult.portContext.destinationPortId)}&vessel=${encodeURIComponent(analysisResult.vesselContext.vesselClass)}&laycan_start=${analysisResult.charteringContext.laycanStart}&laycan_end=${analysisResult.charteringContext.laycanEnd}&freight=${analysisResult.costContext.freightRateUsdMt}` : `/decision-center?cargo=${encodeURIComponent(cargoType)}&quantity=${cargoQuantity}&origin=${encodeURIComponent(originPort)}&destination=${destinationPort}&vessel=${preferredVesselType}&laycan_start=${laycanStart}&laycan_end=${laycanEnd}`}
+                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-sm"
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Direct to Decision Center</span>
+                </Link>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
               <Link
                 href={analysisResult ? `/forecast?route=${analysisResult.routeContext.routeId}&cargo=${encodeURIComponent(analysisResult.cargoRequirement.commodityName)}&origin=${encodeURIComponent(analysisResult.routeContext.originPort)}&destination=${encodeURIComponent(analysisResult.portContext.destinationPortName)}&vessel=${encodeURIComponent(analysisResult.vesselContext.vesselClass)}&laycan=${encodeURIComponent(analysisResult.charteringContext.laycanStart + ' to ' + analysisResult.charteringContext.laycanEnd)}` : '/forecast'}

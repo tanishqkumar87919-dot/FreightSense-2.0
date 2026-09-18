@@ -191,23 +191,52 @@ function ScenarioSimulatorInner() {
 
     // Check if query params or localStorage has analysis context
     try {
-      const stored = localStorage.getItem('freightsense_cargo_analysis');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed.cargo_quantity_mt) {
-          setBaseParams((prev) => ({
-            ...prev,
-            commodity_name: parsed.commodity_name || prev.commodity_name,
-            base_cargo_quantity_mt: parsed.cargo_quantity_mt || prev.base_cargo_quantity_mt,
-            base_destination_port_id: parsed.destination_port_id || prev.base_destination_port_id,
-            base_vessel_class: (parsed.preferred_vessel_class as DryBulkVesselClassName) || prev.base_vessel_class,
-          }));
-          setSimOverrides((prev) => ({
-            ...prev,
-            cargo_quantity_mt: parsed.cargo_quantity_mt || prev.cargo_quantity_mt,
-            destination_port_id: parsed.destination_port_id || prev.destination_port_id,
-            vessel_class: (parsed.preferred_vessel_class as DryBulkVesselClassName) || prev.vessel_class,
-          }));
+      const pCargo = searchParams.get('cargo');
+      const pOrigin = searchParams.get('origin');
+      const pDest = searchParams.get('destination') || searchParams.get('port');
+      const pVessel = searchParams.get('vessel') as DryBulkVesselClassName | null;
+      const pQty = parseFloat(searchParams.get('quantity') || '');
+      const pFreight = parseFloat(searchParams.get('freight') || '');
+      const pBunker = parseFloat(searchParams.get('bunker') || '');
+
+      if (pCargo || pDest || pVessel || !isNaN(pQty) || !isNaN(pFreight)) {
+        setBaseParams((prev) => ({
+          ...prev,
+          commodity_name: pCargo || prev.commodity_name,
+          origin_port: pOrigin || prev.origin_port,
+          base_cargo_quantity_mt: !isNaN(pQty) ? pQty : prev.base_cargo_quantity_mt,
+          base_freight_rate_usd_mt: !isNaN(pFreight) ? pFreight : prev.base_freight_rate_usd_mt,
+          base_vessel_class: pVessel || prev.base_vessel_class,
+          base_destination_port_id: pDest && mockEastCoastPortConstraints[pDest] ? pDest : prev.base_destination_port_id,
+          base_bunker_price_usd_mt: !isNaN(pBunker) ? pBunker : prev.base_bunker_price_usd_mt,
+        }));
+        setSimOverrides((prev) => ({
+          ...prev,
+          cargo_quantity_mt: !isNaN(pQty) ? pQty : prev.cargo_quantity_mt,
+          freight_rate_usd_mt: !isNaN(pFreight) ? pFreight : prev.freight_rate_usd_mt,
+          vessel_class: pVessel || prev.vessel_class,
+          destination_port_id: pDest && mockEastCoastPortConstraints[pDest] ? pDest : prev.destination_port_id,
+          bunker_price_usd_mt: !isNaN(pBunker) ? pBunker : prev.bunker_price_usd_mt,
+        }));
+      } else {
+        const stored = localStorage.getItem('freightsense_cargo_analysis');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.cargo_quantity_mt) {
+            setBaseParams((prev) => ({
+              ...prev,
+              commodity_name: parsed.commodity_name || prev.commodity_name,
+              base_cargo_quantity_mt: parsed.cargo_quantity_mt || prev.base_cargo_quantity_mt,
+              base_destination_port_id: parsed.destination_port_id || prev.base_destination_port_id,
+              base_vessel_class: (parsed.preferred_vessel_class as DryBulkVesselClassName) || prev.base_vessel_class,
+            }));
+            setSimOverrides((prev) => ({
+              ...prev,
+              cargo_quantity_mt: parsed.cargo_quantity_mt || prev.cargo_quantity_mt,
+              destination_port_id: parsed.destination_port_id || prev.destination_port_id,
+              vessel_class: (parsed.preferred_vessel_class as DryBulkVesselClassName) || prev.vessel_class,
+            }));
+          }
         }
       }
     } catch {
