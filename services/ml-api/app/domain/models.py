@@ -489,4 +489,86 @@ class ScenarioSimulationResponse(BaseModel):
     advisory_disclaimer: str
 
 
+# ==============================================================================
+# Phase 7: Explainability, Uncertainty & AI Decision Support Models
+# ==============================================================================
+
+class DecisionTraceNodeModel(BaseModel):
+    node_id: str
+    phase_number: int
+    title: str
+    subtitle: str
+    key_metric_label: str
+    key_metric_value: str
+    status: str
+    source_attribution: str
+    details: Dict[str, Any]
+
+
+class AssumptionItemModel(BaseModel):
+    parameter: str
+    category: str
+    value: str
+    source: str
+    data_status: str
+    sensitivity_impact: str
+    notes: str
+
+
+class ModelCardModel(BaseModel):
+    model_name: str
+    version: str
+    algorithm: str
+    training_data_period: str
+    feature_set: List[str]
+    target_variable: str
+    forecast_horizons_supported: List[str]
+    evaluation_method: str
+    metrics: Dict[str, Any]
+    last_updated: str
+    status: str
+
+
+class DataQualityEvidenceModel(BaseModel):
+    evidence_state: str  # 'HIGH EVIDENCE', 'MODERATE EVIDENCE', 'LIMITED EVIDENCE', 'INSUFFICIENT DATA'
+    state_rationale: str
+    historical_observations_count: int
+    data_coverage_period: str
+    verified_sources_count: int
+    unobserved_variables_count: int
+    criteria_evaluated: List[Dict[str, Any]]
+
+
+class IntelligenceQueryRequest(BaseModel):
+    query: str
+    commodity_name: Optional[str] = "Hard Coking Coal (HCC)"
+    origin_port: Optional[str] = "Newcastle, Australia"
+    destination_port_id: Optional[str] = "port-in-prt"
+    cargo_quantity_mt: Optional[float] = 50000.0
+    vessel_class: Optional[str] = "Panamax"
+    laycan_start: Optional[str] = "2026-10-15"
+    laycan_end: Optional[str] = "2026-10-25"
+    forecast_rate_usd_mt: Optional[float] = 15.50
+    waiting_days: Optional[float] = 1.8
+    bunker_price_usd_mt: Optional[float] = 620.0
+    charter_hire_usd_day: Optional[float] = 18000.0
+
+
+class IntelligenceQueryResponse(BaseModel):
+    query: str
+    intent_category: str
+    timestamp: str
+    answer: str
+    evidence: List[str]
+    impact: str
+    uncertainty: str
+    data_status: str
+    decision_factors: List[str]
+    assumptions: List[AssumptionItemModel]
+    limitations: List[str]
+    trace_nodes: List[DecisionTraceNodeModel]
+    data_provenance: List[DataProvenanceModel]
+
+
+
 

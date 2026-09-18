@@ -947,6 +947,132 @@ export interface ScenarioSimulationResponse {
   provenance: DataProvenance;
 }
 
+// ==============================================================================
+// Phase 7: Explainability, Uncertainty & AI Decision Support Engine Types
+// ==============================================================================
 
+export interface DecisionTraceNode {
+  node_id: string;
+  phase_number: number;
+  title: string;
+  subtitle: string;
+  key_metric_label: string;
+  key_metric_value: string;
+  status: string;
+  source_attribution: string;
+  details: Record<string, any>;
+}
 
+export interface AssumptionItem {
+  parameter: string;
+  category: string;
+  value: string;
+  source: string;
+  data_status: string;
+  sensitivity_impact: string;
+  notes: string;
+}
 
+export interface ModelCardInfo {
+  model_name: string;
+  version: string;
+  algorithm: string;
+  training_data_period: string;
+  feature_set: string[];
+  target_variable: string;
+  forecast_horizons_supported: string[];
+  evaluation_method: string;
+  metrics: Record<string, any>;
+  last_updated: string;
+  status: string;
+}
+
+export type EvidenceStateType = 'HIGH EVIDENCE' | 'MODERATE EVIDENCE' | 'LIMITED EVIDENCE' | 'INSUFFICIENT DATA';
+
+export interface DataQualityEvidenceState {
+  evidence_state: EvidenceStateType;
+  state_rationale: string;
+  historical_observations_count: number;
+  data_coverage_period: string;
+  verified_sources_count: number;
+  unobserved_variables_count: number;
+  criteria_evaluated: Array<{
+    criterion: string;
+    passed: boolean;
+    evidence: string;
+    status: string;
+  }>;
+}
+
+export interface FeatureDriver {
+  feature: string;
+  name: string;
+  weight_pct: number;
+  observed_signal: string;
+  model_output: string;
+  forecast_implication: string;
+  provenance: string;
+}
+
+export interface MissingVariableItem {
+  variable: string;
+  impact: string;
+  mitigation: string;
+}
+
+export interface ExplanationFlowStep {
+  step: string;
+  label: string;
+  description: string;
+  type: 'Observed' | 'Calculated' | 'Model Output' | 'Interpretation';
+}
+
+export interface IntelligenceContext {
+  timestamp: string;
+  commodity_name: string;
+  cargo_quantity_mt: number;
+  origin_port: string;
+  destination_port: string;
+  destination_port_id: string;
+  vessel_class: string;
+  forecast_rate_usd_mt: number;
+  uncertainty_intervals: Record<string, { forecast: number; lower: number; upper: number }>;
+  feature_drivers: FeatureDriver[];
+  decision_trace: DecisionTraceNode[];
+  assumptions: AssumptionItem[];
+  model_card: ModelCardInfo;
+  data_quality: DataQualityEvidenceState;
+  missing_variables: MissingVariableItem[];
+  explanation_flow: ExplanationFlowStep[];
+}
+
+export interface IntelligenceQueryRequest {
+  query: string;
+  commodity_name?: string;
+  origin_port?: string;
+  destination_port_id?: string;
+  cargo_quantity_mt?: number;
+  vessel_class?: string;
+  laycan_start?: string;
+  laycan_end?: string;
+  forecast_rate_usd_mt?: number;
+  waiting_days?: number;
+  bunker_price_usd_mt?: number;
+  charter_hire_usd_day?: number;
+}
+
+export interface IntelligenceQueryResponse {
+  query: string;
+  intent_category: string;
+  timestamp: string;
+  answer: string;
+  evidence: string[];
+  impact: string;
+  uncertainty: string;
+  data_status: string;
+  decision_factors: string[];
+  assumptions: AssumptionItem[];
+  limitations: string[];
+  trace_nodes: DecisionTraceNode[];
+  data_provenance: DataProvenance[];
+}

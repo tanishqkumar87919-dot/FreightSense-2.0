@@ -13,6 +13,7 @@ from app.api.routes import (
     cargo_analysis,
     chartering,
     scenario,
+    intelligence,
 )
 
 api_router = APIRouter()
@@ -25,9 +26,11 @@ api_router.include_router(port_constraints.router, tags=["East Coast Port Constr
 api_router.include_router(cargo_analysis.router, tags=["Intelligent Cargo Analysis"])
 api_router.include_router(chartering.router, tags=["Vessel Selection & Chartering"])
 api_router.include_router(scenario.router, tags=["Scenario Simulator & What-If Engine"])
+api_router.include_router(intelligence.router, tags=["Intelligence & Explainability Engine"])
 api_router.include_router(models.router, tags=["Models"])
 api_router.include_router(feedback.router, tags=["Feedback & Observations"])
 api_router.include_router(data_quality.router, tags=["Data Quality"])
 api_router.include_router(data_sources.router, tags=["Data Sources Registry"])
 api_router.include_router(admin.router, tags=["Admin & Retraining"])
+
 

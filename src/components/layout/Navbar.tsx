@@ -46,7 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
     { name: 'Trade Flows', href: '/trade-flows' },
     { name: 'Weather', href: '/weather' },
     { name: 'Signals', href: '/signals' },
-    { name: 'AI Insights', href: '/insights' },
+    { name: 'Intelligence', href: '/insights' },
     { name: 'Alerts', href: '/alerts' },
     { name: 'Reports', href: '/reports' },
     { name: 'Cargo Analysis', href: '/cargo-analysis' },
@@ -65,7 +65,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
     { name: 'Ports', href: '/ports' },
     { name: 'Vessels', href: '/vessels' },
     { name: 'Signals', href: '/signals' },
-    { name: 'AI Insights', href: '/insights' },
+    { name: 'Intelligence', href: '/insights' },
     { name: 'Alerts', href: '/alerts' },
     { name: 'Reports', href: '/reports' },
   ];
