@@ -570,5 +570,79 @@ class IntelligenceQueryResponse(BaseModel):
     data_provenance: List[DataProvenanceModel]
 
 
+# ==============================================================================
+# Phase 8: End-to-End Freight Decision Center Models
+# ==============================================================================
+
+class DecisionCenterWorkflowStepModel(BaseModel):
+    id: str  # cargo, route, forecast, vessel, port, economics, scenario, intelligence, decision
+    step_number: str  # 01 to 09
+    title: str
+    status: str  # completed, running, warning, error, pending
+    summary: str
+    timestamp: Optional[str] = None
 
 
+class DecisionFactorItemModel(BaseModel):
+    factor: str
+    current_value: str
+    status: str  # OK, WARNING, ALERT, NEUTRAL
+    source: str
+    data_provenance: str  # LIVE, HISTORICAL, SIMULATED, CONFIGURED, USER INPUT, CALCULATED, MODEL OUTPUT, UNAVAILABLE
+    impact: str
+
+
+class DecisionCenterSummaryModel(BaseModel):
+    freight_outlook: str
+    vessel_fit: str
+    port_fit: str
+    economic_context: str
+    scenario_impact: str
+    data_evidence: str
+    uncertainty: str
+    key_assumptions: List[str]
+    known_limitations: List[str]
+
+
+class DecisionCenterComparisonItemModel(BaseModel):
+    metric: str
+    base_case: str
+    scenario_a: str
+    scenario_b: str
+    unit: str
+    delta_notes: str
+
+
+class DecisionCenterEvaluateRequest(BaseModel):
+    cargo_type: str = "Thermal Coal"
+    cargo_quantity: float = 75000.0
+    origin_port: str = "Newcastle, Australia"
+    origin_country: Optional[str] = "Australia"
+    destination_port_id: str = "port-in-prt"
+    laycan_start: str = "2026-10-15"
+    laycan_end: str = "2026-10-25"
+    vessel_class: Optional[str] = "Panamax"
+    charter_type: Optional[str] = "Voyage"
+    freight_assumption_usd_pmt: Optional[float] = None
+    bunker_assumption_usd_pmt: Optional[float] = None
+    active_scenario: Optional[str] = "base"
+
+
+class DecisionCenterEvaluateResponse(BaseModel):
+    request: DecisionCenterEvaluateRequest
+    steps: List[DecisionCenterWorkflowStepModel]
+    cargo_result: Dict[str, Any]
+    route_result: Dict[str, Any]
+    forecast_result: Dict[str, Any]
+    vessel_result: Dict[str, Any]
+    port_result: Dict[str, Any]
+    economics_result: Dict[str, Any]
+    scenario_result: Dict[str, Any]
+    explainability_result: Dict[str, Any]
+    decision_trace: List[DecisionTraceNodeModel]
+    decision_factors: List[DecisionFactorItemModel]
+    decision_summary: DecisionCenterSummaryModel
+    side_by_side_comparisons: List[DecisionCenterComparisonItemModel]
+    data_provenance_map: Dict[str, str]
+    executive_report_html_snippet: Optional[str] = None
+    timestamp: str

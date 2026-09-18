@@ -50,6 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
     { name: 'Alerts', href: '/alerts' },
     { name: 'Reports', href: '/reports' },
     { name: 'Cargo Analysis', href: '/cargo-analysis' },
+    { name: 'Decision Center', href: '/decision-center' },
     { name: 'Scenario', href: '/scenario' },
     { name: 'Explorer', href: '/explorer' },
     { name: 'Compare', href: '/compare' },
@@ -58,6 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
   // Primary top links shown directly on desktop navbar
   const primaryLinks = [
     { name: 'Overview', href: '/dashboard' },
+    { name: 'Decision Center', href: '/decision-center' },
     { name: 'Map', href: '/map' },
     { name: 'Market', href: '/market' },
     { name: 'Forecast', href: '/forecast' },
@@ -72,6 +74,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
 
   // More menu for the rest
   const moreLinks = [
+    { name: 'Decision Center (End-to-End)', href: '/decision-center' },
     { name: 'Bulk Cargo Analysis (SIH)', href: '/cargo-analysis' },
     { name: 'Trade Flows', href: '/trade-flows' },
     { name: 'Weather & Ocean', href: '/weather' },

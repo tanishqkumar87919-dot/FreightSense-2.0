@@ -1076,3 +1076,112 @@ export interface IntelligenceQueryResponse {
   trace_nodes: DecisionTraceNode[];
   data_provenance: DataProvenance[];
 }
+
+// ==============================================================================
+// Phase 8: End-to-End Freight Decision Center Types
+// ==============================================================================
+
+export type DecisionCenterWorkflowStepId =
+  | 'cargo'
+  | 'route'
+  | 'forecast'
+  | 'vessel'
+  | 'port'
+  | 'economics'
+  | 'scenario'
+  | 'intelligence'
+  | 'decision';
+
+export type DecisionCenterStepStatus =
+  | 'pending'
+  | 'running'
+  | 'completed'
+  | 'warning'
+  | 'error'
+  | 'unavailable';
+
+export interface DecisionCenterStep {
+  id: DecisionCenterWorkflowStepId;
+  step_number: string;
+  title: string;
+  status: DecisionCenterStepStatus;
+  summary: string;
+  timestamp?: string;
+}
+
+export interface DecisionFactorItem {
+  factor: string;
+  current_value: string;
+  status: 'OK' | 'WARNING' | 'ALERT' | 'NEUTRAL';
+  source: string;
+  data_provenance: 'LIVE' | 'HISTORICAL' | 'SIMULATED' | 'CONFIGURED' | 'USER INPUT' | 'CALCULATED' | 'MODEL OUTPUT' | 'UNAVAILABLE' | 'GROUNDED';
+  impact: string;
+}
+
+export interface DecisionCenterSummary {
+  freight_outlook: string;
+  vessel_fit: string;
+  port_fit: string;
+  economic_context: string;
+  scenario_impact: string;
+  data_evidence: string;
+  uncertainty: string;
+  key_assumptions: string[];
+  known_limitations: string[];
+}
+
+export interface DecisionCenterComparisonItem {
+  metric: string;
+  base_case: string;
+  scenario_a: string;
+  scenario_b: string;
+  unit: string;
+  delta_notes: string;
+}
+
+export interface DecisionCenterFormInput {
+  cargo_type: string;
+  cargo_quantity: number;
+  origin_port: string;
+  origin_country?: string;
+  destination_port_id: string;
+  laycan_start: string;
+  laycan_end: string;
+  vessel_class?: string;
+  charter_type?: string;
+  freight_assumption_usd_pmt?: number;
+  bunker_assumption_usd_pmt?: number;
+  active_scenario?: string;
+}
+
+export interface DecisionCenterAnalysisResult {
+  request: DecisionCenterFormInput;
+  steps: DecisionCenterStep[];
+  cargo_result: any;
+  route_result: any;
+  forecast_result: any;
+  vessel_result: any;
+  port_result: any;
+  economics_result: any;
+  scenario_result: any;
+  explainability_result: {
+    model_card?: any;
+    data_quality?: any;
+    assumptions?: any[];
+  };
+  decision_trace: DecisionTraceNode[];
+  decision_factors: DecisionFactorItem[];
+  decision_summary: DecisionCenterSummary;
+  side_by_side_comparisons: DecisionCenterComparisonItem[];
+  data_provenance_map: Record<string, string>;
+  executive_report_html_snippet?: string;
+  timestamp: string;
+}
+
+export interface DecisionCenterPreset {
+  id: string;
+  name: string;
+  badge: string;
+  description: string;
+  input: DecisionCenterFormInput;
+}
