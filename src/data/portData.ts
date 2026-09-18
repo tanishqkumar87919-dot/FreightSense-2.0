@@ -366,5 +366,70 @@ export const mockPorts: PortItem[] = [
       { date: 'Sat', arrivals: 5, congestion: 44, dwellTime: 2.5, throughput: 15500 },
       { date: 'Sun', arrivals: 6, congestion: 46, dwellTime: 2.6, throughput: 17000 },
     ],
+  },
+  {
+    id: 'port-in-kri',
+    name: 'Krishnapatnam Port (Nellore)',
+    country: 'India',
+    code: 'INKRI',
+    coordinates: [14.2500, 80.1167],
+    annualThroughputMTeu: 0.6,
+    vesselArrivals7d: 38,
+    congestionIndex: 32,
+    averageDwellDays: 1.4,
+    delayRisk: 'Low',
+    activeVesselsWaiting: 2,
+    berthUtilizationPercent: 74,
+    recentEvents: [
+      {
+        id: 'ev-kri-1',
+        title: 'Deepwater Capesize Berth Productivity High',
+        timestamp: '1 day ago',
+        type: 'operational',
+        description: 'Tandem car dumpers achieving 35,000 MT/day evacuation with minimal laytime consumption.',
+      }
+    ],
+    metricsHistory: [
+      { date: 'Mon', arrivals: 5, congestion: 30, dwellTime: 1.4, throughput: 28000 },
+      { date: 'Tue', arrivals: 6, congestion: 32, dwellTime: 1.4, throughput: 31000 },
+      { date: 'Wed', arrivals: 5, congestion: 31, dwellTime: 1.3, throughput: 29000 },
+      { date: 'Thu', arrivals: 6, congestion: 34, dwellTime: 1.5, throughput: 32000 },
+      { date: 'Fri', arrivals: 5, congestion: 32, dwellTime: 1.4, throughput: 30000 },
+      { date: 'Sat', arrivals: 5, congestion: 31, dwellTime: 1.3, throughput: 29000 },
+      { date: 'Sun', arrivals: 6, congestion: 32, dwellTime: 1.4, throughput: 31000 },
+    ],
+  },
+  {
+    id: 'port-in-dhm',
+    name: 'Dhamra Port (Bhadrak)',
+    country: 'India',
+    code: 'INDHM',
+    coordinates: [20.8033, 86.9639],
+    annualThroughputMTeu: 0.4,
+    vesselArrivals7d: 28,
+    congestionIndex: 28,
+    averageDwellDays: 1.3,
+    delayRisk: 'Low',
+    activeVesselsWaiting: 1,
+    berthUtilizationPercent: 70,
+    recentEvents: [
+      {
+        id: 'ev-dhm-1',
+        title: 'Deep Draft Capesize Turnaround On Schedule',
+        timestamp: '2 days ago',
+        type: 'operational',
+        description: 'Direct deepwater berthing for 180k DWT iron ore/coking coal carrier without lighterage.',
+      }
+    ],
+    metricsHistory: [
+      { date: 'Mon', arrivals: 4, congestion: 27, dwellTime: 1.3, throughput: 25000 },
+      { date: 'Tue', arrivals: 4, congestion: 28, dwellTime: 1.3, throughput: 27000 },
+      { date: 'Wed', arrivals: 5, congestion: 29, dwellTime: 1.4, throughput: 29000 },
+      { date: 'Thu', arrivals: 4, congestion: 28, dwellTime: 1.3, throughput: 26000 },
+      { date: 'Fri', arrivals: 4, congestion: 27, dwellTime: 1.3, throughput: 25000 },
+      { date: 'Sat', arrivals: 3, congestion: 26, dwellTime: 1.2, throughput: 24000 },
+      { date: 'Sun', arrivals: 4, congestion: 28, dwellTime: 1.3, throughput: 26000 },
+    ],
   }
 ];
+

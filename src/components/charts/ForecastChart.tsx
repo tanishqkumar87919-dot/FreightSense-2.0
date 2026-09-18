@@ -24,6 +24,8 @@ interface ForecastChartProps {
   expectedChangePercent: number;
   confidencePercent: number;
   riskScore: number;
+  unit?: string;
+  modelName?: string;
 }
 
 export const ForecastChart: React.FC<ForecastChartProps> = ({
@@ -32,7 +34,13 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({
   expectedChangePercent,
   confidencePercent,
   riskScore,
+  unit = 'USD/FEU',
+  modelName = 'XGBoost Champion (v2.5)',
 }) => {
+  const isBulk = unit.toUpperCase().includes('/MT') || expectedRateUsd < 100;
+  const displayUnit = isBulk ? 'USD / MT' : 'USD / FEU';
+  const unitSuffix = isBulk ? '/ MT' : '/ FEU';
+
   // Format series so that the shaded area shows the band between lowerBound and upperBound
   const chartData = series.map((item) => ({
     ...item,
@@ -47,10 +55,13 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({
           <div className="flex items-center gap-2">
             <h3 className="text-base font-semibold text-slate-900">Econometric AI Projection</h3>
             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide bg-sky-100 text-sky-800 uppercase">
-              Bayesian Ensemble
+              {modelName}
+            </span>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-700">
+              {displayUnit}
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">Historical trajectory and 95% confidence interval ribbon</p>
+          <p className="text-xs text-slate-500 mt-0.5">Historical trajectory and 95% confidence interval ribbon (Strict Leak-Free Pipeline)</p>
         </div>
 
         <div className="flex items-center gap-3 text-xs">
@@ -72,7 +83,7 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({
       {/* Chart Canvas */}
       <div className="h-72 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+          <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: isBulk ? 5 : -10, bottom: 0 }}>
             <defs>
               <linearGradient id="confidenceBandGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#38BDF8" stopOpacity={0.25} />
@@ -86,8 +97,8 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({
               fontSize={11}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(val) => `$${val}`}
-              domain={['dataMin - 200', 'dataMax + 200']}
+              tickFormatter={(val) => `$${isBulk ? Number(val).toFixed(2) : Math.round(Number(val))}`}
+              domain={isBulk ? ['dataMin - 1', 'dataMax + 1'] : ['dataMin - 200', 'dataMax + 200']}
             />
             <Tooltip
               content={({ active, payload, label }) => {
@@ -100,14 +111,14 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({
                   return (
                     <div className="glass-card px-3.5 py-2.5 rounded-xl border border-slate-200/90 shadow-xl text-xs space-y-1">
                       <p className="font-semibold text-slate-900 border-b border-slate-100 pb-1">{label}</p>
-                      {actual && (
-                        <p className="text-slate-700 font-medium">Actual: <span className="font-bold">${actual}</span></p>
+                      {actual !== undefined && (
+                        <p className="text-slate-700 font-medium">Actual: <span className="font-bold">${isBulk ? Number(actual).toFixed(2) : actual} {unitSuffix}</span></p>
                       )}
-                      {forecast && (
+                      {forecast !== undefined && (
                         <>
-                          <p className="text-sky-700 font-bold">Forecast: ${forecast}</p>
+                          <p className="text-sky-700 font-bold">Forecast: ${isBulk ? Number(forecast).toFixed(2) : forecast} {unitSuffix}</p>
                           <p className="text-[10px] text-slate-500">
-                            Confidence Band: ${lower} - ${upper}
+                            Confidence Band (95%): ${isBulk ? Number(lower).toFixed(2) : lower} - ${isBulk ? Number(upper).toFixed(2) : upper}
                           </p>
                         </>
                       )}
@@ -149,7 +160,9 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-4 border-t border-slate-100">
         <div>
           <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Projected Target</span>
-          <p className="text-lg font-bold text-slate-900 mt-0.5">${expectedRateUsd} <span className="text-xs font-normal text-slate-500">/ FEU</span></p>
+          <p className="text-lg font-bold text-slate-900 mt-0.5">
+            ${isBulk ? expectedRateUsd.toFixed(2) : expectedRateUsd} <span className="text-xs font-normal text-slate-500">{unitSuffix}</span>
+          </p>
         </div>
         <div>
           <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Expected Move</span>

@@ -49,6 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
     { name: 'AI Insights', href: '/insights' },
     { name: 'Alerts', href: '/alerts' },
     { name: 'Reports', href: '/reports' },
+    { name: 'Cargo Analysis', href: '/cargo-analysis' },
     { name: 'Scenario', href: '/scenario' },
     { name: 'Explorer', href: '/explorer' },
     { name: 'Compare', href: '/compare' },
@@ -71,6 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
 
   // More menu for the rest
   const moreLinks = [
+    { name: 'Bulk Cargo Analysis (SIH)', href: '/cargo-analysis' },
     { name: 'Trade Flows', href: '/trade-flows' },
     { name: 'Weather & Ocean', href: '/weather' },
     { name: 'Scenario Analysis', href: '/scenario' },
