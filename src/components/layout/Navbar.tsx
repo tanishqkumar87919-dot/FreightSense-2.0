@@ -23,6 +23,7 @@ import { useNotifications } from '@/context/NotificationContext';
 import { usePreferences } from '@/context/PreferencesContext';
 import { SihDemoGuide } from '@/components/demo/SihDemoGuide';
 import { DataQualityModal } from '@/components/ui/DataQualityModal';
+import { CurrencySelector } from '@/components/ui/CurrencySelector';
 
 interface NavbarProps {
   onOpenCommandPalette: () => void;
@@ -172,6 +173,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
 
         {/* Right Action Icons & Controls */}
         <div className="flex items-center gap-2">
+          {/* Global Currency Selector */}
+          <CurrencySelector />
+
           {/* Global Search Trigger (Cmd + K) */}
           <button
             onClick={onOpenCommandPalette}
@@ -333,16 +337,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
               </Link>
             ))}
           </div>
-          <div className="border-t border-slate-200 mt-3 pt-3 flex items-center justify-between text-xs text-slate-500">
-            <Link href="/docs" onClick={() => setMobileMenuOpen(false)} className="hover:text-slate-900">
-              Help & Docs
-            </Link>
-            <Link href="/settings" onClick={() => setMobileMenuOpen(false)} className="hover:text-slate-900">
-              Settings
-            </Link>
-            <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="text-rose-600 font-medium">
-              Sign Out
-            </Link>
+          <div className="border-t border-slate-200 mt-3 pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500">
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-semibold text-slate-500">Display Currency:</span>
+              <CurrencySelector />
+            </div>
+            <div className="flex items-center gap-4">
+              <Link href="/docs" onClick={() => setMobileMenuOpen(false)} className="hover:text-slate-900">
+                Help & Docs
+              </Link>
+              <Link href="/settings" onClick={() => setMobileMenuOpen(false)} className="hover:text-slate-900">
+                Settings
+              </Link>
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="text-rose-600 font-medium">
+                Sign Out
+              </Link>
+            </div>
           </div>
         </div>
       )}

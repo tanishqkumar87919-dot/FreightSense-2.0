@@ -41,6 +41,7 @@ import {
   DecisionTraceNode,
   DecisionFactorItem,
 } from '@/types';
+import { useCurrency } from '@/context/CurrencyContext';
 
 // Provenance Badge Component
 function ProvenanceBadge({ provenance }: { provenance: string }) {
@@ -71,6 +72,7 @@ function ProvenanceBadge({ provenance }: { provenance: string }) {
 function DecisionCenterContent() {
   const searchParams = useSearchParams();
   const presets = decisionCenterService.getPresets();
+  const { formatUsdConverted, currency, rates, rateMetadata } = useCurrency();
 
   const [activePreset, setActivePreset] = useState<string>('paradip-thermal-coal');
   const [formData, setFormData] = useState<DecisionCenterFormInput>(presets[0].input);
@@ -368,10 +370,15 @@ function DecisionCenterContent() {
               <div className="bg-white/80 p-3.5 rounded-xl border border-slate-200/80 shadow-2xs">
                 <div className="text-[10px] uppercase font-semibold text-slate-400">Economics & Horizon</div>
                 <div className="font-bold text-slate-900 mt-1">
-                  ${analysisResult?.economics_result?.forecast_rate_usd_pmt || 15.80} / MT
+                  {formatUsdConverted(analysisResult?.economics_result?.forecast_rate_usd_pmt || 15.80, { unit: '/ MT' })}
                 </div>
                 <div className="text-[11px] text-emerald-700 mt-0.5 font-medium">
-                  Est. Voyage: ${(formData.cargo_quantity * (analysisResult?.economics_result?.forecast_rate_usd_pmt || 15.80)).toLocaleString()}
+                  Est. Voyage: {formatUsdConverted(formData.cargo_quantity * (analysisResult?.economics_result?.forecast_rate_usd_pmt || 15.80))}
+                  {currency !== 'USD' && (
+                    <span className="text-slate-400 font-mono text-[10px] ml-1">
+                      (≈ ${(formData.cargo_quantity * (analysisResult?.economics_result?.forecast_rate_usd_pmt || 15.80)).toLocaleString()})
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -696,14 +703,14 @@ function DecisionCenterContent() {
                 <div className="p-3.5 rounded-xl bg-sky-50/70 border border-sky-100 mb-3 shadow-2xs">
                   <div className="flex items-baseline justify-between">
                     <span className="text-2xl font-black text-slate-900">
-                      ${analysisResult?.economics_result?.forecast_rate_usd_pmt?.toFixed(2) || '15.80'}
+                      {formatUsdConverted(analysisResult?.economics_result?.forecast_rate_usd_pmt || 15.80, { unit: '/ MT' })}
                     </span>
                     <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
                       +4.0% Bullish
                     </span>
                   </div>
                   <div className="text-[11px] text-slate-600 mt-1">
-                    Benchmark: $15.20/MT · 80% CI: ${(15.8 * 0.92).toFixed(2)} - ${(15.8 * 1.08).toFixed(2)}
+                    Benchmark: {formatUsdConverted(15.20, { unit: '/ MT' })} {currency !== 'USD' ? `(≈ $15.20/MT)` : ''} · 80% CI
                   </div>
                 </div>
 
@@ -840,11 +847,10 @@ function DecisionCenterContent() {
                 <div className="p-3.5 rounded-xl bg-amber-50/70 border border-amber-100 mb-3 shadow-2xs">
                   <div className="flex items-baseline justify-between">
                     <span className="text-2xl font-black text-slate-900">
-                      ${analysisResult?.economics_result?.cost_per_mt_usd?.toFixed(2) || '18.20'}
-                      <span className="text-xs font-normal text-slate-500"> / MT</span>
+                      {formatUsdConverted(analysisResult?.economics_result?.cost_per_mt_usd || 18.20, { unit: '/ MT' })}
                     </span>
                     <span className="text-xs font-bold text-slate-700">
-                      ${analysisResult?.economics_result?.total_voyage_cost_usd?.toLocaleString() || '1,365,000'} Total
+                      {formatUsdConverted(analysisResult?.economics_result?.total_voyage_cost_usd || 1365000)} Total
                     </span>
                   </div>
                   <div className="text-[11px] text-slate-600 mt-1">
@@ -856,13 +862,13 @@ function DecisionCenterContent() {
                   <div className="flex justify-between">
                     <span>Ocean Freight:</span>
                     <span className="font-semibold text-slate-800">
-                      ${analysisResult?.economics_result?.ocean_freight_usd?.toLocaleString() || '1,185,000'}
+                      {formatUsdConverted(analysisResult?.economics_result?.ocean_freight_usd || 1185000)}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Expected Demurrage:</span>
                     <span className="font-semibold text-amber-700">
-                      ${analysisResult?.economics_result?.demurrage_exposure_usd?.toLocaleString() || '54,000'}
+                      {formatUsdConverted(analysisResult?.economics_result?.demurrage_exposure_usd || 54000)}
                     </span>
                   </div>
                 </div>
@@ -1329,10 +1335,15 @@ function DecisionCenterContent() {
                   <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-teal-100 text-teal-800">COMMERCIAL</span>
                 </div>
                 <div className="font-semibold text-slate-900 text-xs mb-1">
-                  ${analysisResult?.economics_result?.cost_per_mt_usd?.toFixed(2) || '18.20'} / MT Landed Outlay
+                  {formatUsdConverted(analysisResult?.economics_result?.cost_per_mt_usd || 18.20, { unit: '/ MT' })} Landed Outlay
+                  {currency !== 'USD' && (
+                    <span className="text-slate-400 font-mono text-[10px] ml-1">
+                      (≈ ${(analysisResult?.economics_result?.cost_per_mt_usd || 18.20).toFixed(2)}/MT)
+                    </span>
+                  )}
                 </div>
                 <p className="text-[11px] text-slate-600 leading-relaxed">
-                  Total voyage commitment of ${(formData.cargo_quantity * (analysisResult?.economics_result?.cost_per_mt_usd || 18.20)).toLocaleString()} across ~{analysisResult?.economics_result?.voyage_days || 21.0} voyage days including sea transit and 1.8d standard berth turnaround.
+                  Total voyage commitment of {formatUsdConverted(formData.cargo_quantity * (analysisResult?.economics_result?.cost_per_mt_usd || 18.20))} across ~{analysisResult?.economics_result?.voyage_days || 21.0} voyage days including sea transit and 1.8d standard berth turnaround.
                 </p>
               </div>
 
@@ -1637,24 +1648,45 @@ function DecisionCenterContent() {
                 </div>
               </div>
 
+              {/* Currency & FX Provenance Metadata Banner */}
+              <div className="p-3 bg-slate-50/90 rounded-xl border border-slate-200/90 mb-4 text-xs">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 font-semibold text-slate-700">
+                    <DollarSign className="w-3.5 h-3.5 text-slate-500" />
+                    <span>Selected Currency:</span>
+                    <span className="font-bold text-slate-900 px-2 py-0.5 rounded bg-white border border-slate-200">{currency}</span>
+                    {currency !== 'USD' && (
+                      <span className="text-slate-500 font-mono text-[11px]">
+                        (Original: USD · 1 USD = {rates[currency]} {currency})
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[10px] text-slate-500 font-medium">
+                    Rate Source: {rateMetadata.source}
+                  </span>
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="p-4 bg-sky-50/70 rounded-xl border border-sky-200/80">
                   <span className="text-xs font-bold text-sky-800 block mb-1">Forecast Rate</span>
                   <div className="text-2xl font-black text-slate-900">
-                    ${analysisResult?.economics_result?.forecast_rate_usd_pmt?.toFixed(2) || '15.80'}{' '}
-                    <span className="text-xs font-normal text-slate-500">/ MT</span>
+                    {formatUsdConverted(analysisResult?.economics_result?.forecast_rate_usd_pmt || 15.80, { unit: '/ MT' })}
                   </div>
-                  <div className="text-[11px] text-slate-500 mt-1">XGBoost v2.5 Model Registry (80% CI: $14.54 - $17.06)</div>
+                  <div className="text-[11px] text-slate-500 mt-1">
+                    {currency !== 'USD' && `≈ $${(analysisResult?.economics_result?.forecast_rate_usd_pmt || 15.80).toFixed(2)} / MT USD · `}
+                    XGBoost v2.5 Model Registry (80% CI: $14.54 - $17.06)
+                  </div>
                 </div>
 
                 <div className="p-4 bg-teal-50/70 rounded-xl border border-teal-200/80">
                   <span className="text-xs font-bold text-teal-800 block mb-1">Total Landed Cost</span>
                   <div className="text-2xl font-black text-slate-900">
-                    ${analysisResult?.economics_result?.cost_per_mt_usd?.toFixed(2) || '18.20'}{' '}
-                    <span className="text-xs font-normal text-slate-500">/ MT</span>
+                    {formatUsdConverted(analysisResult?.economics_result?.cost_per_mt_usd || 18.20, { unit: '/ MT' })}
                   </div>
                   <div className="text-[11px] text-slate-500 mt-1">
-                    Total: ${analysisResult?.economics_result?.total_voyage_cost_usd?.toLocaleString() || '1,365,000'}
+                    Total: {formatUsdConverted(analysisResult?.economics_result?.total_voyage_cost_usd || 1365000)}
+                    {currency !== 'USD' && ` (≈ $${(analysisResult?.economics_result?.total_voyage_cost_usd || 1365000).toLocaleString()} USD)`}
                   </div>
                 </div>
               </div>
@@ -1686,7 +1718,8 @@ function DecisionCenterContent() {
                       <strong>2. WHY:</strong> Pre-winter restocking (+1.8%) & safe +3.3m UKC draft.
                     </div>
                     <div className="p-2 rounded bg-slate-50 border border-slate-200 text-slate-800">
-                      <strong>3. IMPACT:</strong> ${analysisResult?.economics_result?.cost_per_mt_usd?.toFixed(2) || '18.20'}/MT (${analysisResult?.economics_result?.total_voyage_cost_usd?.toLocaleString() || '1,365,000'} outlay).
+                      <strong>3. IMPACT:</strong> {formatUsdConverted(analysisResult?.economics_result?.cost_per_mt_usd || 18.20, { unit: '/ MT' })} ({formatUsdConverted(analysisResult?.economics_result?.total_voyage_cost_usd || 1365000)} outlay)
+                      {currency !== 'USD' && ` (≈ $${(analysisResult?.economics_result?.cost_per_mt_usd || 18.20).toFixed(2)}/MT)`}.
                     </div>
                     <div className="p-2 rounded bg-slate-50 border border-slate-200 text-slate-800">
                       <strong>4. CONFIDENCE:</strong> XGBoost v2.5 test MAE $0.84/MT (80% CI).

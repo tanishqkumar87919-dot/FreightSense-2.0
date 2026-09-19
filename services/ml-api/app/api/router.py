@@ -15,6 +15,7 @@ from app.api.routes import (
     scenario,
     intelligence,
     decision_center,
+    fx,
 )
 
 api_router = APIRouter()
@@ -29,6 +30,7 @@ api_router.include_router(chartering.router, tags=["Vessel Selection & Charterin
 api_router.include_router(scenario.router, tags=["Scenario Simulator & What-If Engine"])
 api_router.include_router(intelligence.router, tags=["Intelligence & Explainability Engine"])
 api_router.include_router(decision_center.router, tags=["Decision Center"])
+api_router.include_router(fx.router, tags=["Foreign Exchange & Multi-Currency"])
 api_router.include_router(models.router, tags=["Models"])
 api_router.include_router(feedback.router, tags=["Feedback & Observations"])
 api_router.include_router(data_quality.router, tags=["Data Quality"])

@@ -53,9 +53,11 @@ import { useWatchlist } from '@/context/WatchlistContext';
 import { portService, portConstraintService, portIntelligenceService } from '@/services';
 import { mockEastCoastPortConstraints } from '@/data/eastCoastPortConstraints';
 import { MaritimeMap } from '@/components/maps/MaritimeMap';
+import { useCurrency } from '@/context/CurrencyContext';
 
 function PortsPageContent() {
   const searchParams = useSearchParams();
+  const { formatUsdConverted, currency } = useCurrency();
 
   // URL Query Parameters from Cargo Analysis / Forecast / Vessels
   const paramOrigin = searchParams.get('origin') || 'Hay Point / Newcastle, Australia';
@@ -586,9 +588,11 @@ function PortsPageContent() {
                       Demurrage Rate
                     </span>
                     <p className="text-lg font-black text-slate-800 mt-0.5">
-                      ${portIntelligence.average_demurrage_rate_usd_day.toLocaleString()} / d
+                      {formatUsdConverted(portIntelligence.average_demurrage_rate_usd_day, { unit: '/ d' })}
                     </p>
-                    <span className="text-[10px] text-slate-500">Baltic Bulk Standard</span>
+                    <span className="text-[10px] text-slate-500">
+                      {currency !== 'USD' ? `≈ $${portIntelligence.average_demurrage_rate_usd_day.toLocaleString()}/d • Baltic Bulk` : 'Baltic Bulk Standard'}
+                    </span>
                   </div>
 
                   <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
@@ -894,10 +898,10 @@ function PortsPageContent() {
                       <div className="p-2.5 bg-amber-50/60 rounded-xl border border-amber-200">
                         <span className="text-[10px] text-amber-800 uppercase font-bold">Demurrage Risk</span>
                         <p className="text-base font-black text-amber-900 mt-0.5">
-                          ${(
+                          {formatUsdConverted(
                             (isSimulatedQueue ? portIntelligence.typical_waiting_days + 1.8 : portIntelligence.typical_waiting_days) *
                             portIntelligence.average_demurrage_rate_usd_day
-                          ).toLocaleString()}
+                          )}
                         </p>
                         <span className="text-[9px] text-amber-700">Projected Liability</span>
                       </div>
@@ -907,7 +911,7 @@ function PortsPageContent() {
                       <div className="flex items-center justify-between text-[11px]">
                         <span className="text-slate-500">Daily Demurrage Benchmark:</span>
                         <span className="font-bold text-slate-800">
-                          ${portIntelligence.average_demurrage_rate_usd_day.toLocaleString()} / day
+                          {formatUsdConverted(portIntelligence.average_demurrage_rate_usd_day, { unit: '/ day' })}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-[11px]">
@@ -1166,7 +1170,7 @@ function PortsPageContent() {
 
                               <td className="py-3 px-3">
                                 <span className="font-semibold text-amber-800">
-                                  ${item.demurrage_exposure_usd.toLocaleString()}
+                                  {formatUsdConverted(item.demurrage_exposure_usd)}
                                 </span>
                               </td>
 

@@ -50,6 +50,7 @@ import { MetricCard } from '@/components/ui/MetricCard';
 import { scenarioService, bulkScenarioService } from '@/services';
 import { mockEastCoastPortConstraints } from '@/data/eastCoastPortConstraints';
 import { mockBulkCommodities } from '@/data/bulkCargoData';
+import { useCurrency } from '@/context/CurrencyContext';
 import {
   ScenarioParameters,
   ScenarioResult,
@@ -61,6 +62,7 @@ import {
 
 function ScenarioSimulatorInner() {
   const searchParams = useSearchParams();
+  const { formatUsdConverted, currency, rates } = useCurrency();
 
   // Active top-level tab: 'bulk' (Phase 6 SIH Primary) vs 'container' (Existing Macro Shocks)
   const [activeTab, setActiveTab] = useState<'bulk' | 'container'>('bulk');
@@ -839,7 +841,7 @@ function ScenarioSimulatorInner() {
                     <span className="text-[11px] uppercase font-bold text-slate-500">Total Voyage Outlay</span>
                     <div className="flex items-baseline gap-2">
                       <span className="text-xl font-black text-slate-900">
-                        ${(simulationResponse.simulated_economics.total_voyage_outlay_usd / 1000).toFixed(1)}k
+                        {formatUsdConverted(simulationResponse.simulated_economics.total_voyage_outlay_usd, { compact: true })}
                       </span>
                       <span className={`flex items-center text-xs font-bold ${
                         simulationResponse.delta_total_outlay_usd > 0
@@ -857,7 +859,7 @@ function ScenarioSimulatorInner() {
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-500">
-                      Base: ${(simulationResponse.base_economics.total_voyage_outlay_usd / 1000).toFixed(1)}k (Δ ${Math.abs(Math.round(simulationResponse.delta_total_outlay_usd)).toLocaleString()})
+                      Base: {formatUsdConverted(simulationResponse.base_economics.total_voyage_outlay_usd, { compact: true })} (Δ {formatUsdConverted(Math.abs(Math.round(simulationResponse.delta_total_outlay_usd)))})
                     </p>
                   </div>
 
@@ -866,16 +868,16 @@ function ScenarioSimulatorInner() {
                     <span className="text-[11px] uppercase font-bold text-slate-500">Delivered Cost / MT</span>
                     <div className="flex items-baseline gap-2">
                       <span className="text-xl font-black text-sky-700">
-                        ${simulationResponse.simulated_economics.cost_per_mt_usd.toFixed(2)}
+                        {formatUsdConverted(simulationResponse.simulated_economics.cost_per_mt_usd, { unit: '/ MT' })}
                       </span>
                       <span className={`text-xs font-bold ${
                         simulationResponse.delta_cost_per_mt_usd > 0 ? 'text-rose-600' : simulationResponse.delta_cost_per_mt_usd < 0 ? 'text-emerald-600' : 'text-slate-500'
                       }`}>
-                        {simulationResponse.delta_cost_per_mt_usd > 0 ? '+' : ''}${simulationResponse.delta_cost_per_mt_usd.toFixed(2)}/MT
+                        {simulationResponse.delta_cost_per_mt_usd > 0 ? '+' : ''}{formatUsdConverted(simulationResponse.delta_cost_per_mt_usd, { unit: '/ MT' })}
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-500">
-                      Base Cost: ${simulationResponse.base_economics.cost_per_mt_usd.toFixed(2)}/MT
+                      Base Cost: {formatUsdConverted(simulationResponse.base_economics.cost_per_mt_usd, { unit: '/ MT' })}
                     </p>
                   </div>
 
@@ -886,7 +888,7 @@ function ScenarioSimulatorInner() {
                       <span className={`text-xl font-black ${
                         simulationResponse.simulated_economics.demurrage_exposure_usd > 50000 ? 'text-amber-600' : 'text-slate-900'
                       }`}>
-                        ${simulationResponse.simulated_economics.demurrage_exposure_usd.toLocaleString()}
+                        {formatUsdConverted(simulationResponse.simulated_economics.demurrage_exposure_usd)}
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-500">
@@ -942,7 +944,7 @@ function ScenarioSimulatorInner() {
                       <h3 className="text-sm font-bold text-slate-900">Before vs. After Voyage Economics Comparison</h3>
                     </div>
                     <span className="text-xs font-semibold text-slate-500">
-                      Currency: USD ($) • Parcel: {simulationResponse.simulated_economics.cargo_quantity_mt.toLocaleString()} MT
+                      Currency: {currency} {currency !== 'USD' ? `(Reference: 1 USD = ${rates[currency]} ${currency})` : '($)'} • Parcel: {simulationResponse.simulated_economics.cargo_quantity_mt.toLocaleString()} MT
                     </span>
                   </div>
 
@@ -960,9 +962,9 @@ function ScenarioSimulatorInner() {
                       <tbody className="divide-y divide-slate-100">
                         <tr>
                           <td className="py-2.5 px-3 font-semibold text-slate-800">Ocean Freight Outlay</td>
-                          <td className="py-2.5 px-3 text-slate-600">${simulationResponse.base_economics.total_freight_usd.toLocaleString()}</td>
-                          <td className="py-2.5 px-3 font-bold text-sky-900 bg-sky-50/40">${simulationResponse.simulated_economics.total_freight_usd.toLocaleString()}</td>
-                          <td className="py-2.5 px-3 text-slate-700 font-medium">${simulationResponse.delta_total_freight_usd.toLocaleString()}</td>
+                          <td className="py-2.5 px-3 text-slate-600">{formatUsdConverted(simulationResponse.base_economics.total_freight_usd)}</td>
+                          <td className="py-2.5 px-3 font-bold text-sky-900 bg-sky-50/40">{formatUsdConverted(simulationResponse.simulated_economics.total_freight_usd)}</td>
+                          <td className="py-2.5 px-3 text-slate-700 font-medium">{formatUsdConverted(simulationResponse.delta_total_freight_usd)}</td>
                           <td className="py-2.5 px-3 text-right font-bold">
                             {simulationResponse.base_economics.total_freight_usd > 0
                               ? `${Math.round(((simulationResponse.simulated_economics.total_freight_usd - simulationResponse.base_economics.total_freight_usd) / simulationResponse.base_economics.total_freight_usd) * 100)}%`
@@ -971,34 +973,34 @@ function ScenarioSimulatorInner() {
                         </tr>
                         <tr>
                           <td className="py-2.5 px-3 font-semibold text-slate-800">Bunker Fuel Cost (VLSFO)</td>
-                          <td className="py-2.5 px-3 text-slate-600">${simulationResponse.base_economics.total_bunker_cost_usd.toLocaleString()}</td>
-                          <td className="py-2.5 px-3 font-bold text-sky-900 bg-sky-50/40">${simulationResponse.simulated_economics.total_bunker_cost_usd.toLocaleString()}</td>
-                          <td className="py-2.5 px-3 text-slate-700 font-medium">${(simulationResponse.simulated_economics.total_bunker_cost_usd - simulationResponse.base_economics.total_bunker_cost_usd).toLocaleString()}</td>
+                          <td className="py-2.5 px-3 text-slate-600">{formatUsdConverted(simulationResponse.base_economics.total_bunker_cost_usd)}</td>
+                          <td className="py-2.5 px-3 font-bold text-sky-900 bg-sky-50/40">{formatUsdConverted(simulationResponse.simulated_economics.total_bunker_cost_usd)}</td>
+                          <td className="py-2.5 px-3 text-slate-700 font-medium">{formatUsdConverted(simulationResponse.simulated_economics.total_bunker_cost_usd - simulationResponse.base_economics.total_bunker_cost_usd)}</td>
                           <td className="py-2.5 px-3 text-right font-bold">
                             {Math.round(((simulationResponse.simulated_economics.total_bunker_cost_usd - simulationResponse.base_economics.total_bunker_cost_usd) / simulationResponse.base_economics.total_bunker_cost_usd) * 100)}%
                           </td>
                         </tr>
                         <tr>
                           <td className="py-2.5 px-3 font-semibold text-slate-800">Time Charter Hire Equivalent</td>
-                          <td className="py-2.5 px-3 text-slate-600">${simulationResponse.base_economics.charter_hire_cost_usd.toLocaleString()}</td>
-                          <td className="py-2.5 px-3 font-bold text-sky-900 bg-sky-50/40">${simulationResponse.simulated_economics.charter_hire_cost_usd.toLocaleString()}</td>
-                          <td className="py-2.5 px-3 text-slate-700 font-medium">${(simulationResponse.simulated_economics.charter_hire_cost_usd - simulationResponse.base_economics.charter_hire_cost_usd).toLocaleString()}</td>
+                          <td className="py-2.5 px-3 text-slate-600">{formatUsdConverted(simulationResponse.base_economics.charter_hire_cost_usd)}</td>
+                          <td className="py-2.5 px-3 font-bold text-sky-900 bg-sky-50/40">{formatUsdConverted(simulationResponse.simulated_economics.charter_hire_cost_usd)}</td>
+                          <td className="py-2.5 px-3 text-slate-700 font-medium">{formatUsdConverted(simulationResponse.simulated_economics.charter_hire_cost_usd - simulationResponse.base_economics.charter_hire_cost_usd)}</td>
                           <td className="py-2.5 px-3 text-right font-bold">
                             {Math.round(((simulationResponse.simulated_economics.charter_hire_cost_usd - simulationResponse.base_economics.charter_hire_cost_usd) / simulationResponse.base_economics.charter_hire_cost_usd) * 100)}%
                           </td>
                         </tr>
                         <tr>
                           <td className="py-2.5 px-3 font-semibold text-slate-800">Port PDA (Disbursement Account)</td>
-                          <td className="py-2.5 px-3 text-slate-600">${simulationResponse.base_economics.port_pda_usd.toLocaleString()}</td>
-                          <td className="py-2.5 px-3 font-bold text-sky-900 bg-sky-50/40">${simulationResponse.simulated_economics.port_pda_usd.toLocaleString()}</td>
-                          <td className="py-2.5 px-3 text-slate-700 font-medium">$0</td>
+                          <td className="py-2.5 px-3 text-slate-600">{formatUsdConverted(simulationResponse.base_economics.port_pda_usd)}</td>
+                          <td className="py-2.5 px-3 font-bold text-sky-900 bg-sky-50/40">{formatUsdConverted(simulationResponse.simulated_economics.port_pda_usd)}</td>
+                          <td className="py-2.5 px-3 text-slate-700 font-medium">{formatUsdConverted(0)}</td>
                           <td className="py-2.5 px-3 text-right text-slate-400">0%</td>
                         </tr>
                         <tr>
                           <td className="py-2.5 px-3 font-semibold text-slate-800">Demurrage Liability Exposure</td>
-                          <td className="py-2.5 px-3 text-slate-600">${simulationResponse.base_economics.demurrage_exposure_usd.toLocaleString()}</td>
-                          <td className="py-2.5 px-3 font-bold text-amber-900 bg-amber-50/40">${simulationResponse.simulated_economics.demurrage_exposure_usd.toLocaleString()}</td>
-                          <td className="py-2.5 px-3 text-amber-700 font-bold">${(simulationResponse.simulated_economics.demurrage_exposure_usd - simulationResponse.base_economics.demurrage_exposure_usd).toLocaleString()}</td>
+                          <td className="py-2.5 px-3 text-slate-600">{formatUsdConverted(simulationResponse.base_economics.demurrage_exposure_usd)}</td>
+                          <td className="py-2.5 px-3 font-bold text-amber-900 bg-amber-50/40">{formatUsdConverted(simulationResponse.simulated_economics.demurrage_exposure_usd)}</td>
+                          <td className="py-2.5 px-3 text-amber-700 font-bold">{formatUsdConverted(simulationResponse.simulated_economics.demurrage_exposure_usd - simulationResponse.base_economics.demurrage_exposure_usd)}</td>
                           <td className="py-2.5 px-3 text-right font-bold text-amber-700">
                             {simulationResponse.base_economics.demurrage_exposure_usd > 0
                               ? `${Math.round(((simulationResponse.simulated_economics.demurrage_exposure_usd - simulationResponse.base_economics.demurrage_exposure_usd) / simulationResponse.base_economics.demurrage_exposure_usd) * 100)}%`
@@ -1007,18 +1009,18 @@ function ScenarioSimulatorInner() {
                         </tr>
                         <tr className="bg-slate-100/70 font-black text-slate-900 text-[13px]">
                           <td className="py-3 px-3">Total Estimated Outlay</td>
-                          <td className="py-3 px-3">${simulationResponse.base_economics.total_voyage_outlay_usd.toLocaleString()}</td>
-                          <td className="py-3 px-3 text-sky-700 bg-sky-100/50">${simulationResponse.simulated_economics.total_voyage_outlay_usd.toLocaleString()}</td>
-                          <td className="py-3 px-3 font-bold">${simulationResponse.delta_total_outlay_usd.toLocaleString()}</td>
+                          <td className="py-3 px-3">{formatUsdConverted(simulationResponse.base_economics.total_voyage_outlay_usd)}</td>
+                          <td className="py-3 px-3 text-sky-700 bg-sky-100/50">{formatUsdConverted(simulationResponse.simulated_economics.total_voyage_outlay_usd)}</td>
+                          <td className="py-3 px-3 font-bold">{formatUsdConverted(simulationResponse.delta_total_outlay_usd)}</td>
                           <td className="py-3 px-3 text-right font-black">
                             {simulationResponse.delta_percentage_outlay > 0 ? '+' : ''}{simulationResponse.delta_percentage_outlay}%
                           </td>
                         </tr>
                         <tr className="bg-sky-50 font-bold text-sky-900">
                           <td className="py-2.5 px-3">Delivered Cost per Metric Tonne</td>
-                          <td className="py-2.5 px-3">${simulationResponse.base_economics.cost_per_mt_usd.toFixed(2)}/MT</td>
-                          <td className="py-2.5 px-3 text-sky-700 font-black">${simulationResponse.simulated_economics.cost_per_mt_usd.toFixed(2)}/MT</td>
-                          <td className="py-2.5 px-3">${simulationResponse.delta_cost_per_mt_usd.toFixed(2)}/MT</td>
+                          <td className="py-2.5 px-3">{formatUsdConverted(simulationResponse.base_economics.cost_per_mt_usd, { unit: '/ MT' })}</td>
+                          <td className="py-2.5 px-3 text-sky-700 font-black">{formatUsdConverted(simulationResponse.simulated_economics.cost_per_mt_usd, { unit: '/ MT' })}</td>
+                          <td className="py-2.5 px-3">{formatUsdConverted(simulationResponse.delta_cost_per_mt_usd, { unit: '/ MT' })}</td>
                           <td className="py-2.5 px-3 text-right">
                             {Math.round(((simulationResponse.simulated_economics.cost_per_mt_usd - simulationResponse.base_economics.cost_per_mt_usd) / simulationResponse.base_economics.cost_per_mt_usd) * 1000) / 10}%
                           </td>
@@ -1358,9 +1360,9 @@ function ScenarioSimulatorInner() {
                     </tr>
                     <tr>
                       <td className="py-2 px-3 font-semibold text-slate-700">Freight Rate</td>
-                      <td className="py-2 px-3">${simulationResponse.base_economics.freight_rate_usd_mt}/MT</td>
-                      <td className="py-2 px-3 bg-indigo-50/30">${savedScenario.response.simulated_economics.freight_rate_usd_mt}/MT</td>
-                      <td className="py-2 px-3 bg-sky-50/30 font-bold text-sky-900">${simulationResponse.simulated_economics.freight_rate_usd_mt}/MT</td>
+                      <td className="py-2 px-3">{formatUsdConverted(simulationResponse.base_economics.freight_rate_usd_mt, { unit: '/ MT' })}</td>
+                      <td className="py-2 px-3 bg-indigo-50/30">{formatUsdConverted(savedScenario.response.simulated_economics.freight_rate_usd_mt, { unit: '/ MT' })}</td>
+                      <td className="py-2 px-3 bg-sky-50/30 font-bold text-sky-900">{formatUsdConverted(simulationResponse.simulated_economics.freight_rate_usd_mt, { unit: '/ MT' })}</td>
                     </tr>
                     <tr>
                       <td className="py-2 px-3 font-semibold text-slate-700">Waiting Days</td>
@@ -1370,21 +1372,21 @@ function ScenarioSimulatorInner() {
                     </tr>
                     <tr>
                       <td className="py-2 px-3 font-semibold text-slate-700">Total Voyage Outlay</td>
-                      <td className="py-2 px-3">${simulationResponse.base_economics.total_voyage_outlay_usd.toLocaleString()}</td>
-                      <td className="py-2 px-3 bg-indigo-50/30 font-semibold">${savedScenario.response.simulated_economics.total_voyage_outlay_usd.toLocaleString()}</td>
-                      <td className="py-2 px-3 bg-sky-50/30 font-black text-sky-900">${simulationResponse.simulated_economics.total_voyage_outlay_usd.toLocaleString()}</td>
+                      <td className="py-2 px-3">{formatUsdConverted(simulationResponse.base_economics.total_voyage_outlay_usd)}</td>
+                      <td className="py-2 px-3 bg-indigo-50/30 font-semibold">{formatUsdConverted(savedScenario.response.simulated_economics.total_voyage_outlay_usd)}</td>
+                      <td className="py-2 px-3 bg-sky-50/30 font-black text-sky-900">{formatUsdConverted(simulationResponse.simulated_economics.total_voyage_outlay_usd)}</td>
                     </tr>
                     <tr>
                       <td className="py-2 px-3 font-semibold text-slate-700">Delivered Cost / MT</td>
-                      <td className="py-2 px-3">${simulationResponse.base_economics.cost_per_mt_usd}/MT</td>
-                      <td className="py-2 px-3 bg-indigo-50/30 font-semibold">${savedScenario.response.simulated_economics.cost_per_mt_usd}/MT</td>
-                      <td className="py-2 px-3 bg-sky-50/30 font-black text-sky-900">${simulationResponse.simulated_economics.cost_per_mt_usd}/MT</td>
+                      <td className="py-2 px-3">{formatUsdConverted(simulationResponse.base_economics.cost_per_mt_usd, { unit: '/ MT' })}</td>
+                      <td className="py-2 px-3 bg-indigo-50/30 font-semibold">{formatUsdConverted(savedScenario.response.simulated_economics.cost_per_mt_usd, { unit: '/ MT' })}</td>
+                      <td className="py-2 px-3 bg-sky-50/30 font-black text-sky-900">{formatUsdConverted(simulationResponse.simulated_economics.cost_per_mt_usd, { unit: '/ MT' })}</td>
                     </tr>
                     <tr>
                       <td className="py-2 px-3 font-semibold text-slate-700">Demurrage Exposure</td>
-                      <td className="py-2 px-3">${simulationResponse.base_economics.demurrage_exposure_usd.toLocaleString()}</td>
-                      <td className="py-2 px-3 bg-indigo-50/30">${savedScenario.response.simulated_economics.demurrage_exposure_usd.toLocaleString()}</td>
-                      <td className="py-2 px-3 bg-sky-50/30 font-bold text-amber-700">${simulationResponse.simulated_economics.demurrage_exposure_usd.toLocaleString()}</td>
+                      <td className="py-2 px-3">{formatUsdConverted(simulationResponse.base_economics.demurrage_exposure_usd)}</td>
+                      <td className="py-2 px-3 bg-indigo-50/30">{formatUsdConverted(savedScenario.response.simulated_economics.demurrage_exposure_usd)}</td>
+                      <td className="py-2 px-3 bg-sky-50/30 font-bold text-amber-700">{formatUsdConverted(simulationResponse.simulated_economics.demurrage_exposure_usd)}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -1804,16 +1806,16 @@ function ScenarioSimulatorInner() {
                 <div><strong>Commodity:</strong> {baseParams.commodity_name}</div>
                 <div><strong>Base Parcel:</strong> {simulationResponse.base_economics.cargo_quantity_mt.toLocaleString()} MT</div>
                 <div><strong>Simulated Parcel:</strong> {simulationResponse.simulated_economics.cargo_quantity_mt.toLocaleString()} MT</div>
-                <div><strong>Simulated Outlay:</strong> ${(simulationResponse.simulated_economics.total_voyage_outlay_usd / 1000).toFixed(1)}k USD</div>
-                <div><strong>Cost / MT:</strong> ${simulationResponse.simulated_economics.cost_per_mt_usd}/MT</div>
+                <div><strong>Simulated Outlay:</strong> {formatUsdConverted(simulationResponse.simulated_economics.total_voyage_outlay_usd)} {currency !== 'USD' ? `(≈ $${(simulationResponse.simulated_economics.total_voyage_outlay_usd / 1000).toFixed(1)}k USD)` : ''}</div>
+                <div><strong>Cost / MT:</strong> {formatUsdConverted(simulationResponse.simulated_economics.cost_per_mt_usd, { unit: '/ MT' })}</div>
               </div>
 
               <div className="space-y-1">
                 <h4 className="font-bold text-slate-900">Key Economic Variances:</h4>
                 <ul className="list-disc pl-5 space-y-1 text-slate-600">
-                  <li>Total outlay delta: <strong>${simulationResponse.delta_total_outlay_usd.toLocaleString()} ({simulationResponse.delta_percentage_outlay}%)</strong></li>
-                  <li>Delivered cost delta: <strong>${simulationResponse.delta_cost_per_mt_usd.toFixed(2)}/MT</strong></li>
-                  <li>Demurrage exposure: <strong>${simulationResponse.simulated_economics.demurrage_exposure_usd.toLocaleString()}</strong></li>
+                  <li>Total outlay delta: <strong>{formatUsdConverted(simulationResponse.delta_total_outlay_usd)} ({simulationResponse.delta_percentage_outlay}%)</strong></li>
+                  <li>Delivered cost delta: <strong>{formatUsdConverted(simulationResponse.delta_cost_per_mt_usd, { unit: '/ MT' })}</strong></li>
+                  <li>Demurrage exposure: <strong>{formatUsdConverted(simulationResponse.simulated_economics.demurrage_exposure_usd)}</strong></li>
                 </ul>
               </div>
 

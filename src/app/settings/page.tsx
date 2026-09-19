@@ -19,9 +19,12 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { usePreferences } from '@/context/PreferencesContext';
+import { useCurrency } from '@/context/CurrencyContext';
+import { CurrencyCode } from '@/types/currency';
 
 export default function SettingsPage() {
   const { preferences, updatePreferences } = usePreferences();
+  const { currency: activeCurrency, setCurrency: setGlobalCurrency, currencies } = useCurrency();
   const [activeTab, setActiveTab] = useState<'profile' | 'workspace' | 'preferences' | 'notifications' | 'security'>('profile');
 
   // Local form state
@@ -254,13 +257,21 @@ export default function SettingsPage() {
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">Currency Standard</label>
                   <select
-                    value={formData.currency}
-                    onChange={(e) => handleChange('currency', e.target.value)}
+                    value={activeCurrency}
+                    onChange={(e) => {
+                      handleChange('currency', e.target.value);
+                      setGlobalCurrency(e.target.value as CurrencyCode);
+                    }}
                     className="w-full bg-white px-3.5 py-2 rounded-xl border border-slate-200 text-slate-900 focus:border-sky-500 focus:outline-none"
                   >
-                    <option value="USD ($)">USD ($)</option>
-                    <option value="EUR (€)">EUR (€)</option>
-                    <option value="GBP (£)">GBP (£)</option>
+                    {(Object.keys(currencies) as CurrencyCode[]).map((code) => {
+                      const cfg = currencies[code];
+                      return (
+                        <option key={code} value={code}>
+                          {cfg.flag} {code} — {cfg.name} ({cfg.symbol})
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 

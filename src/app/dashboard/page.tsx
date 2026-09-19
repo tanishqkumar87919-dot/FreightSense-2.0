@@ -29,9 +29,11 @@ import { mockRoutes } from '@/data/routeData';
 import { mockAIInsights } from '@/data/insightData';
 import { RouteItem, PortItem, VesselItem, FreightMarketIndex, AIInsight } from '@/types';
 import { dashboardService, routeService, marketService, insightService } from '@/services';
+import { useCurrency } from '@/context/CurrencyContext';
 
 export default function DashboardPage() {
   const router = useRouter();
+  const { formatUsdConverted } = useCurrency();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastRefreshed, setLastRefreshed] = useState('2024-08-23 18:00 UTC');
   const [dateRange, setDateRange] = useState<'7D' | '30D' | '3M' | '1Y'>('30D');
@@ -146,7 +148,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <MetricCard
           label="Global Freight Index"
-          value={`$${summary.globalCompositeRate ? Math.round(summary.globalCompositeRate).toLocaleString() : '3,761'}`}
+          value={formatUsdConverted(summary.globalCompositeRate || 3761.3)}
           unit="/ FEU"
           change={`${summary.globalRateChangePercent >= 0 ? '+' : ''}${summary.globalRateChangePercent}%`}
           changeType={summary.globalRateChangePercent >= 0 ? 'positive' : 'negative'}
@@ -157,7 +159,7 @@ export default function DashboardPage() {
         />
         <MetricCard
           label="Asia-Europe Rate"
-          value={`$${summary.asiaEuropeRate ? Math.round(summary.asiaEuropeRate).toLocaleString() : '4,283'}`}
+          value={formatUsdConverted(summary.asiaEuropeRate || 4283.0)}
           unit="/ FEU"
           change={`${summary.asiaEuropeChangePercent >= 0 ? '+' : ''}${summary.asiaEuropeChangePercent}%`}
           changeType={summary.asiaEuropeChangePercent >= 0 ? 'positive' : 'negative'}
@@ -304,7 +306,7 @@ export default function DashboardPage() {
                       {route.name}
                       <span className="block text-[10px] text-slate-400 font-normal">{route.corridor}</span>
                     </td>
-                    <td className="py-3 font-bold text-slate-800">${route.spotRateUsd}</td>
+                    <td className="py-3 font-bold text-slate-800">{formatUsdConverted(route.spotRateUsd)}</td>
                     <td className={`py-3 font-semibold ${route.weeklyChangePercent >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
                       {route.weeklyChangePercent >= 0 ? '+' : ''}{route.weeklyChangePercent}%
                     </td>
@@ -453,7 +455,10 @@ export default function DashboardPage() {
               <div className="space-y-3">
                 <div className="p-4 rounded-xl bg-sky-50/50 border border-sky-200">
                   <p className="text-xs text-slate-500">Spot Freight Rate</p>
-                  <p className="text-2xl font-bold text-slate-900 mt-1">${selectedMapObject.data.spotRateUsd} <span className="text-xs font-normal text-slate-500">/ FEU</span></p>
+                  <p className="text-2xl font-bold text-slate-900 mt-1">
+                    {formatUsdConverted(selectedMapObject.data.spotRateUsd)}{' '}
+                    <span className="text-xs font-normal text-slate-500">/ FEU</span>
+                  </p>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">

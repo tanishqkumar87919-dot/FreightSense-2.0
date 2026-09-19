@@ -43,6 +43,7 @@ import {
   mockForecastCausalExplanations,
 } from '@/data/forecastData';
 import { ForecastDriverItem, ForecastExplanationSignal, CharteringImplication } from '@/types';
+import { useCurrency } from '@/context/CurrencyContext';
 
 // Supported corridors including Overseas Bulk to East Coast India + Container Corridors
 const ALL_CORRIDORS = [
@@ -179,10 +180,13 @@ function ForecastContent() {
   const [obsValue, setObsValue] = useState('');
   const [obsContext, setObsContext] = useState('');
 
+  const { formatUsdConverted, currency } = useCurrency();
+
   // Active corridor configuration
   const activeCorridor = ALL_CORRIDORS.find(c => c.id === selectedRouteId) || ALL_CORRIDORS[0];
   const isBulk = activeCorridor.category === 'bulk';
   const displayUnit = isBulk ? 'USD/MT' : 'USD/FEU';
+  const activeCurrencyUnit = isBulk ? `${currency}/MT` : `${currency}/FEU`;
   const hasExternalContext = Boolean(paramCargo || paramOrigin || paramDestination);
 
   useEffect(() => {
@@ -509,10 +513,14 @@ function ForecastContent() {
           </div>
           <div className="mt-2 flex items-baseline gap-1">
             <span className="text-2xl font-black text-slate-900">
-              ${isBulk ? activeCorridor.baselineRate.toFixed(2) : activeCorridor.baselineRate}
+              {formatUsdConverted(activeCorridor.baselineRate, { unit: isBulk ? '/ MT' : '/ FEU' })}
             </span>
-            <span className="text-xs text-slate-500 font-medium">{displayUnit}</span>
           </div>
+          {currency !== 'USD' && (
+            <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+              ≈ ${isBulk ? activeCorridor.baselineRate.toFixed(2) : activeCorridor.baselineRate} {displayUnit}
+            </div>
+          )}
           <p className="text-[11px] text-slate-500 mt-1">Ground-truth Baltic & IPA tariff reference</p>
         </div>
 
@@ -527,10 +535,14 @@ function ForecastContent() {
           </div>
           <div className="mt-2 flex items-baseline gap-1">
             <span className="text-2xl font-black text-sky-700">
-              ${isBulk ? Number(forecastData.expectedRateUsd).toFixed(2) : forecastData.expectedRateUsd}
+              {formatUsdConverted(Number(forecastData.expectedRateUsd), { unit: isBulk ? '/ MT' : '/ FEU' })}
             </span>
-            <span className="text-xs text-slate-500 font-medium">{displayUnit}</span>
           </div>
+          {currency !== 'USD' && (
+            <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+              ≈ ${isBulk ? Number(forecastData.expectedRateUsd).toFixed(2) : forecastData.expectedRateUsd} {displayUnit}
+            </div>
+          )}
           <div className="flex items-center gap-1.5 text-[11px] mt-1 font-semibold">
             {forecastData.expectedChangePercent >= 0 ? (
               <span className="text-amber-600 flex items-center">
@@ -552,12 +564,14 @@ function ForecastContent() {
           </div>
           <div className="mt-2 flex items-baseline gap-1">
             <span className="text-base font-bold text-slate-900">
-              ${isBulk ? (Number(forecastData.expectedRateUsd) * 0.96).toFixed(2) : Math.round(Number(forecastData.expectedRateUsd) * 0.96)}
-              {' '}-{' '}
-              ${isBulk ? (Number(forecastData.expectedRateUsd) * 1.04).toFixed(2) : Math.round(Number(forecastData.expectedRateUsd) * 1.04)}
+              {formatUsdConverted(Number(forecastData.expectedRateUsd) * 0.96)} - {formatUsdConverted(Number(forecastData.expectedRateUsd) * 1.04, { unit: isBulk ? '/ MT' : '/ FEU' })}
             </span>
-            <span className="text-xs text-slate-500 font-medium">{displayUnit}</span>
           </div>
+          {currency !== 'USD' && (
+            <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+              ≈ ${isBulk ? (Number(forecastData.expectedRateUsd) * 0.96).toFixed(2) : Math.round(Number(forecastData.expectedRateUsd) * 0.96)} - ${isBulk ? (Number(forecastData.expectedRateUsd) * 1.04).toFixed(2) : Math.round(Number(forecastData.expectedRateUsd) * 1.04)} {displayUnit}
+            </div>
+          )}
           <p className="text-[11px] text-slate-500 mt-1">Calibrated quantile coverage (95.0% verified)</p>
         </div>
 
@@ -952,7 +966,7 @@ function ForecastContent() {
               <thead className="text-[10px] text-slate-400 uppercase bg-slate-50 border-y border-slate-200">
                 <tr>
                   <th className="px-4 py-2 font-bold">Observation Date</th>
-                  <th className="px-4 py-2 font-bold">Realized Spot ({displayUnit})</th>
+                  <th className="px-4 py-2 font-bold">Realized Spot ({currency !== 'USD' ? `${currency} (≈ USD)` : displayUnit})</th>
                   <th className="px-4 py-2 font-bold">Model Forecast</th>
                   <th className="px-4 py-2 font-bold">Absolute Error</th>
                   <th className="px-4 py-2 font-bold">Accuracy Status</th>
@@ -962,9 +976,9 @@ function ForecastContent() {
                 {backtestHistory.slice(-6).map((pt, i) => (
                   <tr key={i} className="hover:bg-slate-50/60">
                     <td className="px-4 py-2 font-mono text-slate-600">{pt.date}</td>
-                    <td className="px-4 py-2 font-bold text-slate-900">${pt.actual}</td>
-                    <td className="px-4 py-2 font-bold text-sky-700">${pt.predicted}</td>
-                    <td className="px-4 py-2 font-mono text-slate-600">${pt.error}</td>
+                    <td className="px-4 py-2 font-bold text-slate-900">{formatUsdConverted(pt.actual)}</td>
+                    <td className="px-4 py-2 font-bold text-sky-700">{formatUsdConverted(pt.predicted)}</td>
+                    <td className="px-4 py-2 font-mono text-slate-600">{formatUsdConverted(pt.error)}</td>
                     <td className="px-4 py-2">
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                         PASS (Within 95% Band)

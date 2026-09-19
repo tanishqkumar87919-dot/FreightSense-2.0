@@ -40,10 +40,12 @@ import { mockCandidateBulkVessels } from '@/data/bulkCargoData';
 import { mockEastCoastPortConstraints } from '@/data/eastCoastPortConstraints';
 import { VesselItem, CharterCandidateVessel, CharteringEvaluationResponse, VesselFitAnalysisResult } from '@/types';
 import { useWatchlist } from '@/context/WatchlistContext';
+import { useCurrency } from '@/context/CurrencyContext';
 import { charteringService, forecastService } from '@/services';
 
 function VesselsContent() {
   const searchParams = useSearchParams();
+  const { formatUsdConverted, currency } = useCurrency();
 
   // Ingest URL parameters if navigating from /cargo-analysis or /forecast
   const initialTab = searchParams.get('tab') === 'fleet' ? 'fleet' : 'chartering';
@@ -298,7 +300,12 @@ function VesselsContent() {
               <div>
                 <span className="text-[10px] uppercase text-slate-400 font-bold block">14D Freight Outlook</span>
                 <span className="text-emerald-400 font-bold text-xs">
-                  ${forecastOutlook?.expectedRateUsd ? Number(forecastOutlook.expectedRateUsd).toFixed(2) : '14.85'} / MT
+                  {formatUsdConverted(forecastOutlook?.expectedRateUsd ? Number(forecastOutlook.expectedRateUsd) : 14.85, { unit: '/ MT' })}
+                  {currency !== 'USD' && (
+                    <span className="text-[10px] text-slate-400 font-normal ml-1">
+                      (≈ ${forecastOutlook?.expectedRateUsd ? Number(forecastOutlook.expectedRateUsd).toFixed(2) : '14.85'})
+                    </span>
+                  )}
                   <span className="text-[10px] text-slate-400 font-normal ml-1">({forecastOutlook?.trend || 'Stable'})</span>
                 </span>
               </div>
@@ -446,10 +453,20 @@ function VesselsContent() {
                           </span>
                         </td>
                         <td className="px-4 py-3 font-mono font-bold text-slate-900">
-                          ${analysis.voyage_economics.voyage_charter_usd_mt} <span className="text-[10px] font-normal text-slate-500">/ MT</span>
+                          {formatUsdConverted(analysis.voyage_economics.voyage_charter_usd_mt, { unit: '/ MT' })}
+                          {currency !== 'USD' && (
+                            <div className="text-[10px] font-normal text-slate-400 font-mono">
+                              ≈ ${analysis.voyage_economics.voyage_charter_usd_mt}/MT
+                            </div>
+                          )}
                         </td>
                         <td className="px-4 py-3 font-mono text-slate-700">
-                          ${analysis.voyage_economics.time_charter_usd_mt} <span className="text-[10px] font-normal text-slate-500">/ MT</span>
+                          {formatUsdConverted(analysis.voyage_economics.time_charter_usd_mt, { unit: '/ MT' })}
+                          {currency !== 'USD' && (
+                            <div className="text-[10px] font-normal text-slate-400 font-mono">
+                              ≈ ${analysis.voyage_economics.time_charter_usd_mt}/MT
+                            </div>
+                          )}
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
@@ -669,18 +686,26 @@ function VesselsContent() {
                       </div>
                       <div>
                         <span className="text-2xl font-black text-slate-900">
-                          ${activeCandidateAnalysis.voyage_economics.voyage_charter_usd_mt}
+                          {formatUsdConverted(activeCandidateAnalysis.voyage_economics.voyage_charter_usd_mt, { unit: '/ MT' })}
                         </span>
-                        <span className="text-xs text-slate-500 font-medium"> / MT</span>
+                        {currency !== 'USD' && (
+                          <div className="text-[11px] text-slate-400 font-mono">
+                            ≈ ${activeCandidateAnalysis.voyage_economics.voyage_charter_usd_mt} / MT
+                          </div>
+                        )}
                       </div>
                       <div className="space-y-1 text-[11px] text-slate-600 pt-1 border-t border-slate-200">
                         <div className="flex justify-between">
                           <span>Total Freight:</span>
-                          <span className="font-mono font-bold">${activeCandidateAnalysis.voyage_economics.voyage_charter_total_usd.toLocaleString()}</span>
+                          <span className="font-mono font-bold">
+                            {formatUsdConverted(activeCandidateAnalysis.voyage_economics.voyage_charter_total_usd)}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Demurrage Risk Buffer:</span>
-                          <span className="font-mono">${activeCandidateAnalysis.demurrage_exposure.potential_exposure_usd.toLocaleString()}</span>
+                          <span className="font-mono">
+                            {formatUsdConverted(activeCandidateAnalysis.demurrage_exposure.potential_exposure_usd)}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -695,22 +720,32 @@ function VesselsContent() {
                       </div>
                       <div>
                         <span className="text-2xl font-black text-indigo-700">
-                          ${activeCandidateAnalysis.voyage_economics.time_charter_usd_mt}
+                          {formatUsdConverted(activeCandidateAnalysis.voyage_economics.time_charter_usd_mt, { unit: '/ MT' })}
                         </span>
-                        <span className="text-xs text-indigo-600 font-medium"> / MT</span>
+                        {currency !== 'USD' && (
+                          <div className="text-[11px] text-indigo-400 font-mono">
+                            ≈ ${activeCandidateAnalysis.voyage_economics.time_charter_usd_mt} / MT
+                          </div>
+                        )}
                       </div>
                       <div className="space-y-1 text-[11px] text-indigo-900 pt-1 border-t border-indigo-200">
                         <div className="flex justify-between">
                           <span>Hire Component:</span>
-                          <span className="font-mono font-bold">${activeCandidateAnalysis.voyage_economics.hire_component_usd.toLocaleString()}</span>
+                          <span className="font-mono font-bold">
+                            {formatUsdConverted(activeCandidateAnalysis.voyage_economics.hire_component_usd)}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Bunker Fuel (VLSFO):</span>
-                          <span className="font-mono">${activeCandidateAnalysis.voyage_economics.bunker_component_usd.toLocaleString()}</span>
+                          <span className="font-mono">
+                            {formatUsdConverted(activeCandidateAnalysis.voyage_economics.bunker_component_usd)}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Port Disbursements:</span>
-                          <span className="font-mono">${activeCandidateAnalysis.voyage_economics.port_pda_component_usd.toLocaleString()}</span>
+                          <span className="font-mono">
+                            {formatUsdConverted(activeCandidateAnalysis.voyage_economics.port_pda_component_usd)}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -723,7 +758,7 @@ function VesselsContent() {
                         Recommended Structure: <strong className="text-indigo-700">{activeCandidateAnalysis.voyage_economics.recommended_charter_type}</strong>
                       </span>
                       <span className="font-mono text-[11px] font-bold text-slate-700">
-                        Variance: ${Math.abs(activeCandidateAnalysis.voyage_economics.cost_differential_usd).toLocaleString()} ({activeCandidateAnalysis.voyage_economics.cost_differential_pct}%)
+                        Variance: {formatUsdConverted(Math.abs(activeCandidateAnalysis.voyage_economics.cost_differential_usd))} ({activeCandidateAnalysis.voyage_economics.cost_differential_pct}%)
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">
@@ -764,7 +799,7 @@ function VesselsContent() {
                     <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
                       <span className="text-[10px] text-slate-400 font-bold uppercase block">Demurrage Rate</span>
                       <span className="text-sm font-bold text-slate-900 font-mono">
-                        ${activeCandidateAnalysis.demurrage_exposure.daily_demurrage_rate_usd.toLocaleString()}/day
+                        {formatUsdConverted(activeCandidateAnalysis.demurrage_exposure.daily_demurrage_rate_usd, { unit: '/ day' })}
                       </span>
                     </div>
                     <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
@@ -782,7 +817,7 @@ function VesselsContent() {
                     <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
                       <span className="text-[10px] text-slate-400 font-bold uppercase block">Potential Exposure</span>
                       <span className="text-sm font-bold text-amber-700 font-mono">
-                        ${activeCandidateAnalysis.demurrage_exposure.potential_exposure_usd.toLocaleString()}
+                        {formatUsdConverted(activeCandidateAnalysis.demurrage_exposure.potential_exposure_usd)}
                       </span>
                     </div>
                   </div>

@@ -42,6 +42,7 @@ import {
 } from '@/services';
 import { mockBulkCommodities, mockDryBulkVesselClasses } from '@/data/bulkCargoData';
 import { mockEastCoastPortConstraints } from '@/data/eastCoastPortConstraints';
+import { useCurrency } from '@/context/CurrencyContext';
 
 // 8 analysis pipeline stages
 const PIPELINE_STAGES = [
@@ -56,6 +57,7 @@ const PIPELINE_STAGES = [
 ];
 
 export default function CargoAnalysisPage() {
+  const { formatUsdConverted, currency } = useCurrency();
   // Form State
   const [cargoType, setCargoType] = useState('Hard Coking Coal (HCC)');
   const [cargoQuantity, setCargoQuantity] = useState<number>(50000);
@@ -534,7 +536,7 @@ export default function CargoAnalysisPage() {
               </div>
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                 <span className="text-slate-500">Demurrage Benchmark</span>
-                <span className="font-bold text-slate-800">${selectedPortData.averageDemurrageRateUsdPerDay.toLocaleString()} / day</span>
+                <span className="font-bold text-slate-800">{formatUsdConverted(selectedPortData.averageDemurrageRateUsdPerDay, { unit: '/ day' })}</span>
               </div>
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                 <span className="text-slate-500">Lighterage Status</span>
@@ -644,9 +646,13 @@ export default function CargoAnalysisPage() {
                 <div className="text-right">
                   <div className="text-[11px] text-slate-400">Baseline Voyage Benchmark</div>
                   <div className="text-2xl font-extrabold text-emerald-400">
-                    ${analysisResult.freightMarket.benchmarkRateUsdMt.toFixed(2)}{' '}
-                    <span className="text-xs font-normal text-slate-300">/ MT</span>
+                    {formatUsdConverted(analysisResult.freightMarket.benchmarkRateUsdMt, { unit: '/ MT' })}
                   </div>
+                  {currency !== 'USD' && (
+                    <div className="text-[11px] text-slate-400 font-mono">
+                      ≈ ${analysisResult.freightMarket.benchmarkRateUsdMt.toFixed(2)} / MT
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -755,7 +761,14 @@ export default function CargoAnalysisPage() {
               <div className="space-y-3 text-xs">
                 <div className="flex justify-between py-1 border-b border-slate-50">
                   <span className="text-slate-500">Benchmark Reference Rate</span>
-                  <span className="font-bold text-slate-800">${analysisResult.freightMarket.benchmarkRateUsdMt.toFixed(2)} / MT</span>
+                  <span className="font-bold text-slate-800">
+                    {formatUsdConverted(analysisResult.freightMarket.benchmarkRateUsdMt, { unit: '/ MT' })}
+                    {currency !== 'USD' && (
+                      <span className="text-xs text-slate-400 font-normal ml-1.5 font-mono">
+                        (≈ ${analysisResult.freightMarket.benchmarkRateUsdMt.toFixed(2)}/MT)
+                      </span>
+                    )}
+                  </span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-slate-50">
                   <span className="text-slate-500">Index Reference</span>
@@ -933,10 +946,11 @@ export default function CargoAnalysisPage() {
               <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
                 <span className="text-[11px] text-slate-500 block">Baseline Freight Total</span>
                 <span className="text-lg font-bold text-slate-900">
-                  ${analysisResult.costContext.estimatedFreightBaselineUsd.toLocaleString()}
+                  {formatUsdConverted(analysisResult.costContext.estimatedFreightBaselineUsd)}
                 </span>
                 <span className="text-[10px] text-slate-400 block mt-0.5">
-                  @ ${analysisResult.costContext.freightRateUsdMt.toFixed(2)} / MT
+                  @ {formatUsdConverted(analysisResult.costContext.freightRateUsdMt, { unit: '/ MT' })}
+                  {currency !== 'USD' && ` (≈ $${analysisResult.costContext.freightRateUsdMt.toFixed(2)}/MT)`}
                 </span>
               </div>
 
@@ -944,10 +958,12 @@ export default function CargoAnalysisPage() {
                 <span className="text-[11px] text-slate-500 block">Target Freight Variance</span>
                 <span className="text-lg font-bold text-slate-900">
                   {analysisResult.costContext.varianceVsTargetUsdMt !== undefined && analysisResult.costContext.varianceVsTargetUsdMt !== null
-                    ? `${analysisResult.costContext.varianceVsTargetUsdMt >= 0 ? '+' : ''}$${analysisResult.costContext.varianceVsTargetUsdMt.toFixed(2)}/MT`
+                    ? `${analysisResult.costContext.varianceVsTargetUsdMt >= 0 ? '+' : ''}${formatUsdConverted(analysisResult.costContext.varianceVsTargetUsdMt, { unit: '/ MT' })}`
                     : 'Not Specified'}
                 </span>
-                <span className="text-[10px] text-slate-400 block mt-0.5">Vs User Target</span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">
+                  Vs User Target {analysisResult.costContext.varianceVsTargetUsdMt !== undefined && analysisResult.costContext.varianceVsTargetUsdMt !== null && currency !== 'USD' ? `(≈ ${analysisResult.costContext.varianceVsTargetUsdMt >= 0 ? '+' : ''}$${analysisResult.costContext.varianceVsTargetUsdMt.toFixed(2)}/MT)` : ''}
+                </span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
@@ -961,10 +977,11 @@ export default function CargoAnalysisPage() {
               <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
                 <span className="text-[11px] text-slate-500 block">Demurrage Risk Exposure</span>
                 <span className="text-lg font-bold text-amber-700">
-                  ${analysisResult.costContext.potentialDemurrageExposureUsd.toLocaleString()}
+                  {formatUsdConverted(analysisResult.costContext.potentialDemurrageExposureUsd)}
                 </span>
                 <span className="text-[10px] text-slate-400 block mt-0.5">
-                  @ ${analysisResult.costContext.demurrageRateUsdDay.toLocaleString()} / day
+                  @ {formatUsdConverted(analysisResult.costContext.demurrageRateUsdDay, { unit: '/ day' })}
+                  {currency !== 'USD' && ` (≈ $${analysisResult.costContext.demurrageRateUsdDay.toLocaleString()}/d)`}
                 </span>
               </div>
             </div>
